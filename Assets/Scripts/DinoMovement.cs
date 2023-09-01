@@ -23,7 +23,7 @@ public class DinoMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        gravityScale = rb.gravityScale;
+        //gravityScale = rb.gravityScale;
     }
 
     private void Update()
@@ -36,6 +36,8 @@ public class DinoMovement : MonoBehaviour
 
     private void InputHandler()
     {
+        // substituir esses Inputs por botões na tela? Talvez
+        // ainda n sei
         if (Input.GetButtonDown("Fire1"))
             PrepareJump();
 
