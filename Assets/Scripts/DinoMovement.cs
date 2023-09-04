@@ -28,12 +28,15 @@ public class DinoMovement : MonoBehaviour
 
     private void Update()
     {
-        InputHandler();
+        grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
+
+        //InputHandler();
         GravityHandler();
         CollidersHandler();
         JumpHandler();
     }
 
+    /*
     private void InputHandler()
     {
         // substituir esses Inputs por botões na tela? Talvez
@@ -47,7 +50,7 @@ public class DinoMovement : MonoBehaviour
         //crouching = Input.GetButton("Fire1");
         grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
     }
-
+    */
 
     private void GravityHandler()
     {
@@ -130,6 +133,23 @@ public class DinoMovement : MonoBehaviour
     }
 
     // One-frame methods
+
+    public void SetCrouching(bool _vl)
+    {
+        crouching = _vl;
+
+        if (jumping && _vl)
+            CancelJump(true);
+    }
+
+    public void JumpInteraction(bool _vl)
+    {
+        if (_vl)
+            PrepareJump();
+        else
+            CancelJump();
+    }
+
 
     private void CancelJump(bool _force = false)
     {
