@@ -4,50 +4,81 @@ using UnityEngine;
 
 public class ParallaxEffect : MonoBehaviour
 {
-    private bool started = false;
+    //private bool started = false;
 
-    [SerializeField] private float vel;
-    [SerializeField] private Transform[] targets;
-    [SerializeField] private float objSize = 21.4242f;
-    [SerializeField] private float maxScroll = 0f;
+    [SerializeField] private float vel = 15f;
+    [SerializeField] private Transform[] grounds;
+    [SerializeField] private float groundSize = 20;
+    [SerializeField] private float obstacleMaxOffset = 10f;
+    [SerializeField] private float groundMaxScroll = -19f;
+
+    private void Awake()
+    {
+        foreach (Transform _g in grounds)
+        {
+            if (_g.childCount == 0)
+                continue;
+
+            _g.GetChild(0).gameObject.SetActive(false);
+        }
+
+        this.enabled = false;
+    }
 
     private void Update()
     {
-        if (!started) return;
+        GroundParallax();
+    }
 
-        for (int i = 0; i < targets.Length; i++)
+    private void GroundParallax()
+    {
+        for (int i = 0; i < grounds.Length; i++)
         {
-            Vector2 _newPos = targets[i].position;
+            Vector2 _newPos = grounds[i].position;
 
             // fazer a troca antes de aplicar velocidade para evitar posição errada
-            if (_newPos.x < maxScroll)
+            if (_newPos.x < groundMaxScroll)
             {
                 int _nextPosIndex = i - 1;
-                if (_nextPosIndex < 0) _nextPosIndex = targets.Length - 1;
+                if (_nextPosIndex < 0) _nextPosIndex = grounds.Length - 1;
 
-                _newPos = targets[_nextPosIndex].position;
-                _newPos.x += (objSize - 0.1f);
+                _newPos = grounds[_nextPosIndex].position;
+                _newPos.x += groundSize - 0.1f;
+                ResetObstacle(i);
             }
 
             //_newPos.x -= (vel * GameManager.difficulty) * Time.deltaTime;
             // multiplicar pela dificuldade quando for implementada
             _newPos.x -= vel * Time.deltaTime;
 
-            targets[i].position = _newPos;
+            grounds[i].position = _newPos;
         }
-
     }
+
+    private void ResetObstacle(int _i)
+    {
+        if (grounds[_i].childCount == 0) return;
+
+        Transform _obs = grounds[_i].GetChild(0);
+        _obs.gameObject.SetActive(true);
+        Vector2 _newPos = grounds[_i].position;
+        _newPos.y = _obs.position.y;
+        _newPos.x += Random.Range(-obstacleMaxOffset, obstacleMaxOffset);
+        _obs.position = _newPos;
+    }
+
 
     public void SetStatus(bool _vl)
     {
-        started = _vl;
+        //started = _vl;
+        this.enabled = _vl;
     }
 
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(new Vector3(maxScroll, transform.position.y, 0), 1f);
-        Gizmos.DrawWireSphere(new Vector3(-maxScroll, transform.position.y, 0), 1f);
+        Gizmos.DrawWireSphere(new Vector3(groundMaxScroll, transform.position.y, 0), 1f);
+        Gizmos.DrawWireSphere(new Vector3(-groundMaxScroll, transform.position.y, 0), 1f);
     }
 }
