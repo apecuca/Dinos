@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -63,8 +64,10 @@ public class ParallaxEffect : MonoBehaviour
         _obs.gameObject.SetActive(true);
         Vector2 _newPos = grounds[_i].position;
         _newPos.y = _obs.position.y;
-        _newPos.x += Random.Range(-obstacleMaxOffset, obstacleMaxOffset);
+        _newPos.x += UnityEngine.Random.Range(-obstacleMaxOffset, obstacleMaxOffset);
         _obs.position = _newPos;
+
+        _obs.GetComponent<Obstacle>().SetType(UnityEngine.Random.Range(0, 4));
     }
 
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DinoMovement : MonoBehaviour
+public class Dino : MonoBehaviour
 {
     private Rigidbody2D rb;
 
@@ -23,34 +23,16 @@ public class DinoMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        //gravityScale = rb.gravityScale;
     }
 
     private void Update()
     {
         grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
 
-        //InputHandler();
         GravityHandler();
         CollidersHandler();
         JumpHandler();
     }
-
-    /*
-    private void InputHandler()
-    {
-        // substituir esses Inputs por botões na tela? Talvez
-        // ainda n sei
-        if (Input.GetButtonDown("Fire1"))
-            PrepareJump();
-
-        if (Input.GetButtonUp("Fire1"))
-            CancelJump();
-
-        //crouching = Input.GetButton("Fire1");
-        grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
-    }
-    */
 
     private void GravityHandler()
     {
@@ -161,4 +143,20 @@ public class DinoMovement : MonoBehaviour
         if (_force)
             rb.velocity = Vector3.zero;
     }
+
+    private void Die()
+    {
+        GameManager.instance.Die();
+        this.enabled = false;
+        rb.velocity = Vector3.zero;
+        rb.simulated = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D _col)
+    {
+        if (!_col.CompareTag("Obstacle")) return;
+
+        Die();
+    }
+
 }

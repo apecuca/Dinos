@@ -2,16 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private ParallaxEffect pEffect;
+    [SerializeField] private GameObject HUD_ingame;
+    [SerializeField] private GameObject HUD_gameover;
     [SerializeField] private GameObject btn_startGame;
     Transform cam = null;
+
+    public static GameManager instance { get; private set; }
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
 
     private void Start()
     {
         RepositionCamera();
+
+        HUD_ingame.SetActive(true);
+        HUD_gameover.SetActive(false);
+        btn_startGame.SetActive(true);
     }
 
     private void RepositionCamera()
@@ -38,5 +53,17 @@ public class GameManager : MonoBehaviour
         btn_startGame.SetActive(false);
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+
+    public void Die()
+    {
+        pEffect.enabled = false;
+        HUD_ingame.SetActive(false);
+        HUD_gameover.SetActive(true);
+    }
 
 }
