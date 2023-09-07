@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Dino : MonoBehaviour
 {
+    [SerializeField] private bool immortal = false;
+
     private Rigidbody2D rb;
 
     [SerializeField] private GameObject standingCol;
@@ -19,10 +21,12 @@ public class Dino : MonoBehaviour
     private float gravityScale = 8.5f; // 8.5f
     private float jumpTimer = 0f;
     public bool jumping { get; private set; } = false;
+    private Vector2 ogPos;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        ogPos = transform.position;
     }
 
     private void Update()
@@ -152,8 +156,22 @@ public class Dino : MonoBehaviour
         rb.simulated = false;
     }
 
+    public void ResetDino()
+    {
+        transform.position = ogPos;
+        this.enabled = true;
+        rb.velocity = Vector3.zero;
+        rb.simulated = true;
+
+        crouching = false;
+        jumping = false;
+        grounded = false;
+    }
+
+
     private void OnTriggerEnter2D(Collider2D _col)
     {
+        if (immortal) return;
         if (!_col.CompareTag("Obstacle")) return;
 
         Die();
