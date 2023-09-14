@@ -2,17 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public float score = 0f;
     private bool started = false;
+    private bool paused = false;
 
     [SerializeField] private Dino dino;
     [SerializeField] private ParallaxEffect pEffect;
 
     [Header("HUDs")]
+    [SerializeField] private GameObject HUD_paused;
     [SerializeField] private GameObject HUD_ingame;
     [SerializeField] private GameObject HUD_gameover;
     [SerializeField] private GameObject HUD_startGame;
@@ -37,6 +38,9 @@ public class GameManager : MonoBehaviour
         HUD_ingame.SetActive(true);
         HUD_gameover.SetActive(false);
         HUD_startGame.SetActive(true);
+        HUD_paused.SetActive(false);
+
+        PauseUnpause(false);
     }
 
     private void Update()
@@ -71,7 +75,7 @@ public class GameManager : MonoBehaviour
         Vector2 _screenBorders = Camera.main.ScreenToWorldPoint(
             new Vector2(Screen.width, Screen.height)) - cam.position;
         Vector3 _newPos = Vector3.zero;
-        _newPos.x += _screenBorders.x - 5f;
+        _newPos.x += _screenBorders.x -5.5f;
         _newPos.z = -10f;
 
         cam.position = _newPos;
@@ -97,7 +101,9 @@ public class GameManager : MonoBehaviour
         HUD_ingame.SetActive(true);
         HUD_gameover.SetActive(false);
         HUD_startGame.SetActive(false);
+        HUD_paused.SetActive(false);
 
+        PauseUnpause(false);
         dino.ResetDino();
         StartGame();
     }
@@ -112,6 +118,16 @@ public class GameManager : MonoBehaviour
         HUD_ingame.SetActive(false);
         HUD_gameover.SetActive(true);
         difficulty = 0;
+    }
+
+    public void PauseUnpause(bool _vl)
+    {
+        paused = _vl;
+
+        //HUD_ingame.SetActive(!paused);
+        HUD_paused.SetActive(_vl);
+
+        Time.timeScale = Convert.ToInt32(!_vl);
     }
 
 }
