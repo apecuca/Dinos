@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject HUD_ingame;
     [SerializeField] private GameObject HUD_gameover;
     [SerializeField] private GameObject HUD_startGame;
+
+    [Header("Elements")]
+    [SerializeField] private Text lb_currentScore;
     
     Transform cam = null;
     private float increaseDiffTimer = 0f;
@@ -48,7 +52,19 @@ public class GameManager : MonoBehaviour
         if (!started) return;
 
         DifficultyHandler();
-        score += 5f * difficulty * Time.deltaTime;
+        ScoreHandler();
+    }
+
+    private void ScoreHandler()
+    {
+        score += 4.5f * difficulty * Time.deltaTime;
+        int _intScore = (int)score;
+
+        string ohmahgah = $"00000";
+        ohmahgah = ohmahgah.Remove(0, _intScore.ToString().Length);
+
+        lb_currentScore.text = $"{ohmahgah}{_intScore}";    
+        
     }
 
     private void DifficultyHandler()
@@ -59,9 +75,8 @@ public class GameManager : MonoBehaviour
 
         if (increaseDiffTimer < 1f) return;
 
-        difficulty += 0.0035f;
+        difficulty += 0.0055f;
         increaseDiffTimer = 0f;
-        pEffect.UpdateVel();
     }
 
 
@@ -89,7 +104,8 @@ public class GameManager : MonoBehaviour
         HUD_startGame.SetActive(false);
 
         pEffect.SetStatus(true);
-        pEffect.UpdateVel();
+
+        score = 0f;
 
         started = true;
     }
@@ -113,7 +129,6 @@ public class GameManager : MonoBehaviour
     {
         started = false;
 
-        pEffect.enabled = false;
         pEffect.SetStatus(false);
         HUD_ingame.SetActive(false);
         HUD_gameover.SetActive(true);
@@ -124,7 +139,6 @@ public class GameManager : MonoBehaviour
     {
         paused = _vl;
 
-        //HUD_ingame.SetActive(!paused);
         HUD_paused.SetActive(_vl);
 
         Time.timeScale = Convert.ToInt32(!_vl);
