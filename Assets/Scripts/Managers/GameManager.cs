@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
         HUD_paused.SetActive(false);
 
         PauseUnpause(false);
+
+        difficulty = 0f;
     }
 
     private void Update()
