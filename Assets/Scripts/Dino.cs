@@ -13,6 +13,7 @@ public class Dino : MonoBehaviour
 
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform feet;
+    [SerializeField] private Animator anim;
     public bool grounded { get; private set; } = false;
     public bool crouching { get; private set; } = false;
 
@@ -26,7 +27,6 @@ public class Dino : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        ogPos = transform.position;
     }
 
     private void Update()
@@ -36,6 +36,8 @@ public class Dino : MonoBehaviour
         GravityHandler();
         CollidersHandler();
         JumpHandler();
+
+        AnimationsHandler();
     }
 
     private void GravityHandler()
@@ -118,6 +120,13 @@ public class Dino : MonoBehaviour
         }
     }
 
+    private void AnimationsHandler()
+    {
+        anim.SetBool("Grounded", grounded);
+        anim.SetBool("Crouching", crouching);
+    }
+
+
     // One-frame methods
 
     public void SetCrouching(bool _vl)
@@ -154,6 +163,8 @@ public class Dino : MonoBehaviour
         this.enabled = false;
         rb.velocity = Vector3.zero;
         rb.simulated = false;
+
+        anim.SetTrigger("Died");
     }
 
     public void ResetDino()
@@ -166,7 +177,15 @@ public class Dino : MonoBehaviour
         crouching = false;
         jumping = false;
         grounded = false;
+
+        anim.SetTrigger("Started");
     }
+
+    public void SetOgPos()
+    {
+        ogPos = transform.position;
+    }
+
 
 
     private void OnTriggerEnter2D(Collider2D _col)

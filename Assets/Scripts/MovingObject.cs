@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bird : MonoBehaviour
+public class MovingObject : MonoBehaviour
 {
+    [SerializeField] private float speed;
     [SerializeField] private Rigidbody2D rb;
 
     private void Update()
     {
-        rb.velocity = new Vector2(-11f * GameManager.difficulty, 0);
+        rb.velocity = new Vector2(-speed * GameManager.difficulty, 0);
     }
 }

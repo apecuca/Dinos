@@ -9,15 +9,22 @@ public class ParallaxEffect : MonoBehaviour
 
     [SerializeField] private GameObject[] obstacles;
     [SerializeField] private Transform[] grounds;
+    [SerializeField] private Transform[] backgroundObjs;
 
     // ground
     private float groundSize = 38.0625f;
-    private float groundMaxScroll = -30f;
+    // -50f og
+    private float groundMaxScroll = -50f;
     private Vector2 groundNewPos = Vector2.zero;
 
     // obstacle
-    private Vector2 placeRaycastPos = new Vector2(50f, 0);
+    private Vector2 placeRaycastPos = new Vector2(49f, 0);
     private float obstaclePlaceTimer = 0f;
+
+    // background
+    // -15f og
+    private float backgroundMaxScroll = -20f;
+    private float backgroundReplaceTimer = 0f;
 
 
     private void Awake()
@@ -30,6 +37,35 @@ public class ParallaxEffect : MonoBehaviour
         GroundParallax();
         ObstacleHandler();
     }
+
+    private void LateUpdate()
+    {
+        BackgroundParallax();
+    }
+
+    private void BackgroundParallax()
+    {
+        // WAW
+        backgroundReplaceTimer += 1f * Time.deltaTime;
+
+        if (backgroundReplaceTimer < 1f)
+            return;
+
+        for (int i = 0; i < backgroundObjs.Length; i++)
+        {
+            if (backgroundObjs[i].position.x > backgroundMaxScroll)
+                continue;
+
+            float _xDiff = Mathf.Abs(backgroundObjs[i].position.x - backgroundMaxScroll);
+            Vector2 _newPos = new Vector2(-backgroundMaxScroll - _xDiff, backgroundObjs[i].position.y);
+
+            backgroundObjs[i].transform.position = _newPos;
+        }
+
+
+        backgroundReplaceTimer = 0f;
+    }
+
 
     private void ObstacleHandler()
     {
@@ -69,7 +105,8 @@ public class ParallaxEffect : MonoBehaviour
                 groundNewPos.x -= vel * GameManager.difficulty * Time.deltaTime;
 
                 for (int c = 0; c < grounds[i].childCount; c++)
-                    Destroy(grounds[i].GetChild(c).gameObject);
+                    if (grounds[i].GetChild(c).CompareTag("Obstacle"))
+                        Destroy(grounds[i].GetChild(c).gameObject);
 
             }
 
@@ -77,6 +114,8 @@ public class ParallaxEffect : MonoBehaviour
         }
     }
 
+
+    // One-frame methods
 
     public void SetStatus(bool _vl)
     {
@@ -91,17 +130,21 @@ public class ParallaxEffect : MonoBehaviour
                 continue;
 
             for (int c = 0; c < _g.childCount; c++)
-                Destroy(_g.GetChild(c).gameObject);
+                if (_g.GetChild(c).CompareTag("Obstacle"))
+                    Destroy(_g.GetChild(c).gameObject);
         }
     }
-
 
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(new Vector3(groundMaxScroll, transform.position.y, 0), 1f);
-        Gizmos.DrawWireSphere(new Vector3(-groundMaxScroll, transform.position.y, 0), 1f);
+        //Gizmos.DrawWireSphere(new Vector3(groundMaxScroll, transform.position.y, 0), 1f);
+        //Gizmos.DrawWireSphere(new Vector3(-groundMaxScroll, transform.position.y, 0), 1f);
+        Gizmos.DrawRay(new Vector3(groundMaxScroll, 0, 0), Vector3.down * 5f);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(new Vector3(backgroundMaxScroll, 0, 0), Vector3.down * 5f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawRay(placeRaycastPos, Vector3.down * 5f);

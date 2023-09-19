@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -24,9 +25,9 @@ public class GameManager : MonoBehaviour
     
     Transform cam = null;
     private float increaseDiffTimer = 0f;
-    [SerializeField] private float maxDifficulty = 20f;
+    [SerializeField] private float maxDifficulty = 7.5f;
 
-    public static float difficulty { get; private set; } = 1f;
+    public static float difficulty { get; private set; } = 0f;
     public static GameManager instance { get; private set; }
 
     private void Awake()
@@ -37,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        RepositionCamera();
+        //RepositionCamera();
+        RepositionDino();
 
         HUD_ingame.SetActive(true);
         HUD_gameover.SetActive(false);
@@ -60,10 +62,10 @@ public class GameManager : MonoBehaviour
         score += 4.5f * difficulty * Time.deltaTime;
         int _intScore = (int)score;
 
-        string ohmahgah = $"00000";
-        ohmahgah = ohmahgah.Remove(0, _intScore.ToString().Length);
+        string _ohmahgah = $"00000";
+        _ohmahgah = _ohmahgah.Remove(0, _intScore.ToString().Length);
 
-        lb_currentScore.text = $"{ohmahgah}{_intScore}";    
+        lb_currentScore.text = $"{_ohmahgah}{_intScore}";    
         
     }
 
@@ -75,11 +77,11 @@ public class GameManager : MonoBehaviour
 
         if (increaseDiffTimer < 1f) return;
 
-        difficulty += 0.0055f;
+        difficulty += 0.0065f;
         increaseDiffTimer = 0f;
     }
 
-
+    /*
     private void RepositionCamera()
     {
         cam = Camera.main.transform;
@@ -95,6 +97,29 @@ public class GameManager : MonoBehaviour
 
         cam.position = _newPos;
     }
+    */
+
+
+    // One-frame methods
+
+    private void RepositionDino()
+    {
+        cam = Camera.main.transform;
+
+        if (cam == null)
+            throw new Exception("Erro ao validar a cam");
+
+        Vector2 _screenBorders = Camera.main.ScreenToWorldPoint(
+            new Vector2(Screen.width, Screen.height)) - cam.position;
+        Vector3 _newPos = Vector3.zero;
+        _newPos.x = -_screenBorders.x + 5.5f;
+        _newPos.y = dino.transform.position.y;
+
+        dino.transform.position = _newPos;
+
+        dino.SetOgPos();
+    }
+
 
     public void StartGame()
     {
@@ -108,6 +133,8 @@ public class GameManager : MonoBehaviour
         score = 0f;
 
         started = true;
+
+        dino.ResetDino();
     }
 
     public void RestartGame()
@@ -143,5 +170,11 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = Convert.ToInt32(!_vl);
     }
+
+    public void GOTO_menu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 
 }
