@@ -10,6 +10,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject HUD_Settings;
     [SerializeField] private GameObject HUD_Customization;
 
+    [Header("Assignables")]
+    [SerializeField] private PhotonLobby photonLobby;
+
     private int singleplayerSceneID = 1;
 
     private void Start()
@@ -19,12 +22,13 @@ public class MenuManager : MonoBehaviour
 
     public void GotoSingleplayer()
     {
+        Destroy(PhotonRoom.room.gameObject);
         SceneManager.LoadScene(singleplayerSceneID);
     }
 
     public void GotoMultiplayer()
     {
-        // WAM
+        photonLobby.OnMultiplayerBtnClicked();
     }
 
     private void DisableAllHUDs()
@@ -60,7 +64,12 @@ public class MenuManager : MonoBehaviour
             default:
                 break;
         }
+    }
 
+    public void ClearSave()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
     }
 
 }

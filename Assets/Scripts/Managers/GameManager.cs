@@ -7,11 +7,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public float score = 0f;
+    private float score = 0f;
+    private int highscore = 0;
     private bool started = false;
     private bool paused = false;
 
-    [SerializeField] private Dino dino;
+    [SerializeField] private Dino myDino;
     [SerializeField] private ParallaxEffect pEffect;
 
     [Header("HUDs")]
@@ -22,10 +23,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Elements")]
     [SerializeField] private Text lb_currentScore;
+    [SerializeField] private Text lb_highscore;
     
     Transform cam = null;
     private float increaseDiffTimer = 0f;
-    [SerializeField] private float maxDifficulty = 7.5f;
+    private float maxDifficulty = 7.5f;
 
     public static float difficulty { get; private set; } = 0f;
     public static GameManager instance { get; private set; }
@@ -38,7 +40,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //RepositionCamera();
         RepositionDino();
 
         HUD_ingame.SetActive(true);
@@ -49,6 +50,10 @@ public class GameManager : MonoBehaviour
         PauseUnpause(false);
 
         difficulty = 0f;
+        highscore = 0;
+        if (SaveGame.TemSave())
+            highscore = SaveInfo.GetInstance().GetHighscore();
+        ScoreHandler();
     }
 
     private void Update()
@@ -63,11 +68,16 @@ public class GameManager : MonoBehaviour
     {
         score += 4.5f * difficulty * Time.deltaTime;
         int _intScore = (int)score;
+        if (_intScore > highscore)
+            highscore = _intScore;
 
-        string _ohmahgah = $"00000";
-        _ohmahgah = _ohmahgah.Remove(0, _intScore.ToString().Length);
+        string _scoreTxt = $"00000";
+        _scoreTxt = _scoreTxt.Remove(0, _intScore.ToString().Length);
+        string _highscoreTxt = $"00000";
+        _highscoreTxt = _highscoreTxt.Remove(0, highscore.ToString().Length);
 
-        lb_currentScore.text = $"{_ohmahgah}{_intScore}";    
+        lb_currentScore.text = $"{_scoreTxt}{_intScore}";
+        lb_highscore.text = $"{_highscoreTxt}{highscore}";
         
     }
 
@@ -83,25 +93,6 @@ public class GameManager : MonoBehaviour
         increaseDiffTimer = 0f;
     }
 
-    /*
-    private void RepositionCamera()
-    {
-        cam = Camera.main.transform;
-
-        if (cam == null)
-            throw new Exception("Erro ao validar a cam");
-
-        Vector2 _screenBorders = Camera.main.ScreenToWorldPoint(
-            new Vector2(Screen.width, Screen.height)) - cam.position;
-        Vector3 _newPos = Vector3.zero;
-        _newPos.x += _screenBorders.x -5.5f;
-        _newPos.z = -10f;
-
-        cam.position = _newPos;
-    }
-    */
-
-
     // One-frame methods
 
     private void RepositionDino()
@@ -115,11 +106,11 @@ public class GameManager : MonoBehaviour
             new Vector2(Screen.width, Screen.height)) - cam.position;
         Vector3 _newPos = Vector3.zero;
         _newPos.x = -_screenBorders.x + 5.5f;
-        _newPos.y = dino.transform.position.y;
+        _newPos.y = myDino.transform.position.y;
 
-        dino.transform.position = _newPos;
+        myDino.transform.position = _newPos;
 
-        dino.SetOgPos();
+        myDino.SetOgPos();
     }
 
 
@@ -136,7 +127,7 @@ public class GameManager : MonoBehaviour
 
         started = true;
 
-        dino.ResetDino();
+        myDino.ResetDino();
     }
 
     public void RestartGame()
@@ -149,7 +140,7 @@ public class GameManager : MonoBehaviour
         HUD_paused.SetActive(false);
 
         PauseUnpause(false);
-        dino.ResetDino();
+        myDino.ResetDino();
         StartGame();
     }
 
@@ -162,21 +153,24 @@ public class GameManager : MonoBehaviour
         HUD_ingame.SetActive(false);
         HUD_gameover.SetActive(true);
         difficulty = 0;
+
+        if (highscore > SaveInfo.GetInstance().GetHighscore())
+            SaveInfo.GetInstance().SetHighscore(highscore);
+
+        SaveInfo.GetInstance().Salvar();
     }
 
     public void PauseUnpause(bool _vl)
     {
         paused = _vl;
 
-        HUD_paused.SetActive(_vl);
+        HUD_paused.SetActive(paused);
 
-        Time.timeScale = Convert.ToInt32(!_vl);
+        Time.timeScale = Convert.ToInt32(!paused);
     }
 
     public void GOTO_menu()
     {
         SceneManager.LoadScene(0);
     }
-
-
 }

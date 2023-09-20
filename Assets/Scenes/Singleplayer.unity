@@ -1729,7 +1729,7 @@ GameObject:
   - component: {fileID: 839397628}
   - component: {fileID: 839397627}
   m_Layer: 5
-  m_Name: lb_highScore
+  m_Name: lb_highscore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2894,15 +2894,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a2c0d68e4510784093a137d8641544e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  dino: {fileID: 165790961}
+  myDino: {fileID: 165790961}
   pEffect: {fileID: 1489043635}
   HUD_paused: {fileID: 326423820}
   HUD_ingame: {fileID: 1533713478}
   HUD_gameover: {fileID: 1007166577}
   HUD_startGame: {fileID: 1161242555}
   lb_currentScore: {fileID: 1713386954}
-  maxDifficulty: 3
+  lb_highscore: {fileID: 839397627}
 --- !u!114 &1489043635
 MonoBehaviour:
   m_ObjectHideFlags: 0
