@@ -9,9 +9,8 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 {
     [SerializeField] private bool offlineMode;
 
-    [SerializeField] private GameObject connectionOverlay;
     [SerializeField] private Button btn_multiplayer;
-    [SerializeField] private Text txt_connectionOverlay;
+    [SerializeField] private MenuManager mng_menu;
 
     private string joinRoomText = "Conectando a uma sala...";
 
@@ -20,7 +19,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
 
         ConnectToMaster();
-        ToggleConnectionOverlay(false, null);
+        mng_menu.ToggleTextOverlay(false, null);
     }
 
     private void ConnectToMaster()
@@ -69,36 +68,45 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
     public void OnMultiplayerBtnClicked()
     {
-        ToggleConnectionOverlay(true, joinRoomText);
-        if (PhotonNetwork.IsConnected)
-            PhotonNetwork.JoinRandomRoom();
-        else
+        mng_menu.ToggleTextOverlay(true, joinRoomText);
+
+        if (!PhotonNetwork.IsConnected)
+        {
             OnJoinRandomFailed(-1, "Not connected to master server");
+            return;
+        }
+            
+
+        PhotonNetwork.JoinRandomRoom();
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        //print($"Falhou em entrar em sala aleatória.\n{message}, errCod: {returnCode}");
+        print($"Falhou em entrar em sala aleatória.\n{message}, errCod: {returnCode}");
 
-        ToggleConnectionOverlay(false, null);
+        mng_menu.ToggleTextOverlay(false, null);
         CreateRoom();
     }
 
     private void CreateRoom()
     {
-        ToggleConnectionOverlay(true, "Nenhuma sala disponível, criando uma...");
+        mng_menu.ToggleTextOverlay(true, "Nenhuma sala disponível, criando uma...");
 
-        int _randomRoomName = Random.Range(0, 10);
-
-        // RETIRAR, RETURN PARA FEATURE NÃO IMPLEMENTADA ATÉ O FINAL :)
-        // somente por conveniência, pra eu n precisar reescrever essa parte
-        ToggleConnectionOverlay(true, "Feature ainda não implementada, calminha aí ;)", true);
-        return;
-
-        if (PhotonNetwork.IsConnected)
-            PhotonNetwork.CreateRoom($"Room {_randomRoomName}", GetRoomOps());
-        else
+        if (!PhotonNetwork.IsConnected)
+        {
             OnCreateRoomFailed(-1, "Not connected to master server");
+            return;
+        }
+
+
+        string _roomName;
+        string _nickname = SaveInfo.GetInstance().GetNickname();
+        if (_nickname != "" &&
+            _nickname != null)
+            _roomName = $"{_nickname}'s room";
+        else
+            _roomName = $"Rando's room {Random.Range(0, 1000)}";
+        PhotonNetwork.CreateRoom(_roomName, GetRoomOps());
     }
 
     RoomOptions GetRoomOps()
@@ -114,26 +122,9 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         //print("Falhou em criar sala.");
-        ToggleConnectionOverlay(true, $"Falha na criação de sala.\n{message}, errCod: {returnCode}", true);
+        mng_menu.ToggleTextOverlay(true, $"Falha na criação de sala.\n{message}, errCod: {returnCode}", true);
     }
 
-    public void ToggleConnectionOverlay(bool _vl, string _connectionText, bool _autoClose = false)
-    {
-        connectionOverlay.SetActive(_vl);
-        if (_connectionText != null ||
-            _connectionText != "")
-            txt_connectionOverlay.text = _connectionText;
-
-        if (_autoClose)
-            StartCoroutine(AutoCloseConnectionOverlay());
-
-    }
-
-    private IEnumerator AutoCloseConnectionOverlay()
-    {
-        yield return new WaitForSeconds(3f);
-
-        ToggleConnectionOverlay(false, null);
-    }
+    
 
 }

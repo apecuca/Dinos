@@ -26,11 +26,13 @@ public class SaveInfo
         {
             SaveGameInfo _sgi = SaveGame.Carregar();
             highscore = _sgi.highscore;
+            nickname = _sgi.nickname;
             sfxOn = _sgi.sfxOn;
         }
         else
         {
             highscore = 0;
+            nickname = "";
             sfxOn = true;
         }
     }
@@ -39,9 +41,16 @@ public class SaveInfo
     {
         SaveGameInfo _sgi = new SaveGameInfo();
         _sgi.highscore = highscore;
+        _sgi.nickname = nickname;
         _sgi.sfxOn = sfxOn;
 
         SaveGame.Salvar(_sgi);
+    }
+
+    public void ResetarSave()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
     }
 
 

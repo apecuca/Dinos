@@ -12,14 +12,14 @@ public class GameManager : MonoBehaviour
     private bool started = false;
     private bool paused = false;
 
-    [SerializeField] private Dino myDino;
+    [SerializeField] protected Dino myDino;
     [SerializeField] private ParallaxEffect pEffect;
 
     [Header("HUDs")]
-    [SerializeField] private GameObject HUD_paused;
-    [SerializeField] private GameObject HUD_ingame;
-    [SerializeField] private GameObject HUD_gameover;
-    [SerializeField] private GameObject HUD_startGame;
+    [SerializeField] protected GameObject HUD_paused;
+    [SerializeField] protected GameObject HUD_ingame;
+    [SerializeField] protected GameObject HUD_gameover;
+    [SerializeField] protected GameObject HUD_startGame;
 
     [Header("Elements")]
     [SerializeField] private Text lb_currentScore;
@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
     public static float difficulty { get; private set; } = 0f;
     public static GameManager instance { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (instance == null)
             instance = this;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         RepositionDino();
 
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         ScoreHandler();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (!started) return;
 
@@ -113,7 +113,6 @@ public class GameManager : MonoBehaviour
         myDino.SetOgPos();
     }
 
-
     public void StartGame()
     {
         increaseDiffTimer = -4f;
@@ -160,7 +159,7 @@ public class GameManager : MonoBehaviour
         SaveInfo.GetInstance().Salvar();
     }
 
-    public void PauseUnpause(bool _vl)
+    public virtual void PauseUnpause(bool _vl)
     {
         paused = _vl;
 
@@ -169,7 +168,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = Convert.ToInt32(!paused);
     }
 
-    public void GOTO_menu()
+    public virtual void GOTO_menu()
     {
         SceneManager.LoadScene(0);
     }

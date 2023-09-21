@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,6 +38,11 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         DontDestroyOnLoad(this.gameObject);
     }
 
+    private void Update()
+    {
+        
+    }
+
     public override void OnEnable()
     {
         base.OnEnable();
@@ -51,15 +57,59 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         SceneManager.sceneLoaded -= OnSceneFinishedLoading;
     }
 
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        LoadMultiplayer();
+    }
+
+    private void LoadMultiplayer()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        PhotonNetwork.LoadLevel(multiplayerScene);
+    }
+
     void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
 
         if (currentScene != multiplayerScene) return;
-        // instruções para todos os players aqui
+        // coisas para todos os players aqui
+        StartCoroutine(LevelLoader());
 
         if (!PhotonNetwork.IsMasterClient) return;
-        // instruções somente para o host aqui
+        // coisas que o host faz ao entrar na sala aqui
+    }
+
+    private IEnumerator LevelLoader()
+    {
+        while (!PhotonNetwork.InRoom)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        SpawnPlayer();
+    }
+
+
+    public void SpawnPlayer()
+    {
+        Vector2 _newPos = new Vector2(0, -2.93375f);
+        if (!PhotonNetwork.IsMasterClient)
+            _newPos.x += 1f;
+        GameObject _newDino = PhotonNetwork.Instantiate("MultiplayerDino",
+            _newPos, Quaternion.identity);
+
+        MultiplayerManager.instance.OnPlayerSpawned(_newDino.GetComponent<MultiplayerDino>());
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        Destroy(PhotonRoom.room.gameObject);
+        SceneManager.LoadScene(menuScene);
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -73,13 +123,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         base.OnPlayerLeftRoom(otherPlayer);
         //if (!otherPlayer.IsMasterClient)
         //    UpdatePlayerLists();
-    }
-
-    public override void OnLeftRoom()
-    {
-        base.OnLeftRoom();
-        Destroy(PhotonRoom.room.gameObject);
-        SceneManager.LoadScene(menuScene);
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)

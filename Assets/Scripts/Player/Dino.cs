@@ -24,12 +24,12 @@ public class Dino : MonoBehaviour
     public bool jumping { get; private set; } = false;
     private Vector2 ogPos;
 
-    private void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
 
