@@ -5,6 +5,7 @@ using UnityEngine;
 public class Dino : MonoBehaviour
 {
     [SerializeField] private bool immortal = false;
+    [SerializeField] private bool pcInputs = false;
 
     private Rigidbody2D rb;
 
@@ -17,8 +18,8 @@ public class Dino : MonoBehaviour
     public bool grounded { get; private set; } = false;
     public bool crouching { get; private set; } = false;
 
-    private float jumpMaxTime = 0.175f; //0.175f
-    private float jumpForce = 16.5f;
+    private float jumpMaxTime = 0.155f; //0.175f
+    private float jumpForce = 18.5f; //16.5f
     private float gravityScale = 8.5f; // 8.5f
     private float jumpTimer = 0f;
     public bool jumping { get; private set; } = false;
@@ -33,12 +34,22 @@ public class Dino : MonoBehaviour
     {
         grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
 
+        PCInputs();
         GravityHandler();
         CollidersHandler();
         JumpHandler();
 
         AnimationsHandler();
     }
+
+    private void PCInputs()
+    {
+        if (!pcInputs) return;
+
+        JumpInteraction(Input.GetKey(KeyCode.UpArrow));
+        SetCrouching(Input.GetKey(KeyCode.DownArrow));
+    }
+
 
     private void GravityHandler()
     {
@@ -50,7 +61,7 @@ public class Dino : MonoBehaviour
         
         if (!grounded && crouching)
         {
-            rb.gravityScale = gravityScale * 4;
+            rb.gravityScale = gravityScale * 5; // * 4
             return;
         }
 
