@@ -40,6 +40,12 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - ResetDino
+  - SendNewDino
+  - UpdateDinoList
+  - RPC_UpdateDinoList
+  - DestroyMyDino
+  - RPC_UpdateStatus
+  - RPC_UpdateStats
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

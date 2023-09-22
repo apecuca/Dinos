@@ -6,21 +6,20 @@ using Photon.Pun;
 public class MultiplayerDino : Dino
 {
     [Header("Multiplayer stuff")]
+    [SerializeField] private TextMesh txt_nickname;
     [SerializeField] private PhotonView pv;
 
     protected override void Start()
     {
         base.Start();
 
-        // tirar isso aqui dps
-        ResetDino();
-
         if (!pv.IsMine)
         {
             DisableEverything();
             return;
         }
-
+        
+        this.enabled = false;
         //pv.RPC("ResetDino", RpcTarget.All);
     }
 
@@ -37,6 +36,14 @@ public class MultiplayerDino : Dino
         AnimationsHandler();
     }
 
+    private void OnDestroy()
+    {
+        if (!PhotonNetwork.InRoom) return;
+        if (pv.isMine) return;
+
+        MultiplayerManager.instance.UpdateDinoList();
+    }
+
     private void DisableEverything()
     {
         this.enabled = false;
@@ -44,12 +51,15 @@ public class MultiplayerDino : Dino
         rb.simulated = false;
     }
 
-    //[PunRPC]
+
+    /*
+    [PunRPC]
     public override void ResetDino()
     {
         //base.ResetDino();
 
         anim.SetTrigger("Started");
     }
+    */
 
 }

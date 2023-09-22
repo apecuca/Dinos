@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private bool started = false;
     private bool paused = false;
 
-    [SerializeField] protected Dino myDino;
+    [SerializeField] private Dino myDino;
     [SerializeField] private ParallaxEffect pEffect;
 
     [Header("HUDs")]

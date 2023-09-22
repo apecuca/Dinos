@@ -82,7 +82,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        print($"Falhou em entrar em sala aleatória.\n{message}, errCod: {returnCode}");
+        //print($"Falhou em entrar em sala aleatória.\n{message}, errCod: {returnCode}");
 
         mng_menu.ToggleTextOverlay(false, null);
         CreateRoom();

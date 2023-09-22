@@ -84,7 +84,7 @@ public class MenuManager : MonoBehaviour
         }
 
         // salvar as paradas aqui
-        if (inp_nickname.text != null ||
+        if (inp_nickname.text != null &&
             inp_nickname.text != "")
             SaveInfo.GetInstance().SetNickname(inp_nickname.text);
 

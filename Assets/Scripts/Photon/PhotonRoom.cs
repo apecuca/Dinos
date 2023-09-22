@@ -16,7 +16,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private int multiplayerScene = 2;
 
     // room settings
-    public int maxPlayers { get; private set; } = 4;
+    public int maxPlayers { get; private set; } = 8;
 
     public static PhotonRoom room;
 
@@ -97,7 +97,10 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         GameObject _newDino = PhotonNetwork.Instantiate("MultiplayerDino",
             _newPos, Quaternion.identity);
 
-        MultiplayerManager.instance.OnPlayerSpawned(_newDino.GetComponent<MultiplayerDino>());
+        MultiplayerManager _multMng = MultiplayerManager.instance;
+
+        _multMng.OnMyDinoSpawned(_newDino.GetComponent<MultiplayerDino>());
+        _multMng.UpdateDinoList();
     }
 
     public override void OnLeftRoom()
