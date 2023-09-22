@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     {
         RepositionDino();
 
-        HUD_ingame.SetActive(true);
+        HUD_ingame.SetActive(false);
         HUD_gameover.SetActive(false);
         HUD_startGame.SetActive(true);
         HUD_paused.SetActive(false);
@@ -119,6 +119,7 @@ public class GameManager : MonoBehaviour
         difficulty = 1;
 
         HUD_startGame.SetActive(false);
+        HUD_ingame.SetActive(true);
 
         pEffect.SetStatus(true);
 

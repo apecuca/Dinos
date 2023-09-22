@@ -206,7 +206,8 @@ GameObject:
   - component: {fileID: 629936785218181601}
   - component: {fileID: 629936785218181614}
   - component: {fileID: 5227264856893134899}
-  - component: {fileID: 6597610377436199730}
+  - component: {fileID: 8853834397223374301}
+  - component: {fileID: 8557251298568846201}
   m_Layer: 0
   m_Name: MultiplayerDino
   m_TagString: Untagged
@@ -260,20 +261,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629936785218181612}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6b6ee1481f63a14cb1bebb9999c8ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   immortal: 0
-  standingCol: {fileID: 0}
-  crouchingCol: {fileID: 0}
+  pcInputs: 1
+  standingCol: {fileID: 629936784587836735}
+  crouchingCol: {fileID: 629936784994308522}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
-  feet: {fileID: 0}
-  anim: {fileID: 0}
---- !u!114 &6597610377436199730
+    m_Bits: 256
+  feet: {fileID: 629936785294665319}
+  anim: {fileID: 629936786324120523}
+  pv: {fileID: 8853834397223374301}
+--- !u!114 &8853834397223374301
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -291,10 +294,28 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 8557251298568846201}
+  - {fileID: 2675379687614620376}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &8557251298568846201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629936785218181612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &629936785294665316
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,6 +384,7 @@ GameObject:
   - component: {fileID: 629936786324120525}
   - component: {fileID: 629936786324120522}
   - component: {fileID: 629936786324120523}
+  - component: {fileID: 2675379687614620376}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -454,3 +476,33 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2675379687614620376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629936786324120520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 0
+    Name: Died
+  - Type: 4
+    SynchronizeType: 1
+    Name: Grounded
+  - Type: 4
+    SynchronizeType: 1
+    Name: Crouching
+  - Type: 9
+    SynchronizeType: 0
+    Name: Started
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0

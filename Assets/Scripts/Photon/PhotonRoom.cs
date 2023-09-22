@@ -38,11 +38,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         DontDestroyOnLoad(this.gameObject);
     }
 
-    private void Update()
-    {
-        
-    }
-
     public override void OnEnable()
     {
         base.OnEnable();
@@ -98,7 +93,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         Vector2 _newPos = new Vector2(0, -2.93375f);
         if (!PhotonNetwork.IsMasterClient)
-            _newPos.x += 1f;
+            _newPos.x += Random.Range(-2f, 2f);
         GameObject _newDino = PhotonNetwork.Instantiate("MultiplayerDino",
             _newPos, Quaternion.identity);
 

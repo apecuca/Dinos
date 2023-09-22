@@ -7,16 +7,16 @@ public class Dino : MonoBehaviour
     [SerializeField] private bool immortal = false;
     [SerializeField] private bool pcInputs = false;
 
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
 
     [SerializeField] private GameObject standingCol;
     [SerializeField] private GameObject crouchingCol;
 
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform feet;
-    [SerializeField] private Animator anim;
-    public bool grounded { get; private set; } = false;
-    public bool crouching { get; private set; } = false;
+    [SerializeField] protected LayerMask groundLayer;
+    [SerializeField] protected Transform feet;
+    [SerializeField] protected Animator anim;
+    public bool grounded { get; protected set; } = false;
+    public bool crouching { get; protected set; } = false;
 
     private float jumpMaxTime = 0.155f; //0.175f
     private float jumpForce = 18.5f; //16.5f
@@ -42,7 +42,7 @@ public class Dino : MonoBehaviour
         AnimationsHandler();
     }
 
-    private void PCInputs()
+    protected void PCInputs()
     {
         if (!pcInputs) return;
 
@@ -51,7 +51,7 @@ public class Dino : MonoBehaviour
     }
 
 
-    private void GravityHandler()
+    protected void GravityHandler()
     {
         if (jumping)
         {
@@ -82,7 +82,7 @@ public class Dino : MonoBehaviour
         rb.gravityScale = 0f;
     }
 
-    private void JumpHandler()
+    protected void JumpHandler()
     {
         if (!jumping) return;
 
@@ -98,7 +98,7 @@ public class Dino : MonoBehaviour
     }
 
 
-    private void CollidersHandler()
+    protected void CollidersHandler()
     {
         if (!crouching)
         {
@@ -131,7 +131,7 @@ public class Dino : MonoBehaviour
         }
     }
 
-    private void AnimationsHandler()
+    protected void AnimationsHandler()
     {
         anim.SetBool("Grounded", grounded);
         anim.SetBool("Crouching", crouching);
@@ -178,7 +178,7 @@ public class Dino : MonoBehaviour
         anim.SetTrigger("Died");
     }
 
-    public void ResetDino()
+    public virtual void ResetDino()
     {
         transform.position = ogPos;
         this.enabled = true;
