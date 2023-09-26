@@ -46,6 +46,12 @@ MonoBehaviour:
   - DestroyMyDino
   - RPC_UpdateStatus
   - RPC_UpdateStats
+  - RPC_UpdateCosmetics
+  - RPC_OnDinoJoined
+  - RPC_SetReady
+  - RPC_StartCountdown
+  - RPC_StartGame
+  - RPC_UnlockDino
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

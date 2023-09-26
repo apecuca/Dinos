@@ -54,7 +54,6 @@ public class SaveInfo
     }
 
 
-
     #region GETTERS E SETTERS
 
     public void SetHighscore(int _vl)
@@ -86,6 +85,21 @@ public class SaveInfo
     {
         return sfxOn;
     }
+
+    #endregion
+
+    #region MISC
+
+    public bool IsNicknameValid()
+    {
+        if (nickname != null &&
+            nickname != "" &&
+            nickname != " ")
+            return true;
+
+        return false;
+    }
+
 
     #endregion
 }

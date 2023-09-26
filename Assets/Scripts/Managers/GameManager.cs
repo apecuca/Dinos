@@ -113,7 +113,10 @@ public class GameManager : MonoBehaviour
         myDino.SetOgPos();
     }
 
-    public void StartGame()
+
+    // GAME STUFF
+
+    public virtual void StartGame()
     {
         increaseDiffTimer = -4f;
         difficulty = 1;

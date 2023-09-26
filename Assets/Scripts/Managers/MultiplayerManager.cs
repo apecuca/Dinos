@@ -2,13 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MultiplayerManager : GameManager
 {
     [Header("Multiplayer stuff")]
-    [SerializeField] private MultiplayerDino myMultiplayerDino;
-    [SerializeField] private RectTransform leaderboard;
+    [SerializeField] private Text[] leaderboardElements;
     [SerializeField] private PhotonView pv;
+
+    [Header("Pre-game assignables")]
+    [SerializeField] private Text txt_playersReady;
+    [SerializeField] private GameObject startGameButton;
+
+    private MultiplayerDino myMultiplayerDino;
     private List<MultiplayerDino> dinos = new List<MultiplayerDino>();
 
     public static MultiplayerManager instance { get; private set; }
@@ -26,7 +32,7 @@ public class MultiplayerManager : GameManager
 
         HUD_ingame.SetActive(true);
         HUD_gameover.SetActive(false);
-        HUD_startGame.SetActive(false);
+        HUD_startGame.SetActive(true);
         HUD_paused.SetActive(false);
 
         this.enabled = false;
@@ -37,9 +43,25 @@ public class MultiplayerManager : GameManager
         //base.Update();
     }
 
+    #region AO ENTRAR/SAIR
     public void OnMyDinoSpawned(MultiplayerDino _dino)
     {
         myMultiplayerDino = _dino;
+    }
+
+    public void OnDinoJoined()
+    {
+        pv.RPC("RPC_OnDinoJoined", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void RPC_OnDinoJoined()
+    {
+        // isso aqui roda em todos os GameManagers assim que um dino termina de nascer
+        if (myMultiplayerDino == null) return;
+
+        myMultiplayerDino.UpdateCosmetics();
+        UpdateDinoList();
     }
 
     public void UpdateDinoList()
@@ -47,6 +69,9 @@ public class MultiplayerManager : GameManager
         pv.RPC("RPC_UpdateDinoList", RpcTarget.All);
     }
 
+    #endregion
+
+    #region LEADERBOARD
 
     [PunRPC]
     public void RPC_UpdateDinoList()
@@ -69,25 +94,78 @@ public class MultiplayerManager : GameManager
                 dinos.Add(_tempDinos[i]);
         }
 
-        UpdateLeaderboardCount();
+        UpdateLeaderboard();
     }
 
-    public void UpdateLeaderboardCount()
+    public void UpdateLeaderboard()
     {
         if (!PhotonNetwork.IsConnected) return;
         if (!PhotonNetwork.InRoom) return;
-        if (leaderboard == null) return;
+        if (leaderboardElements.Length < 8) return;
 
-        for (int i = 0; i < leaderboard.childCount; i++)
+        for (int i = 0; i < leaderboardElements.Length; i++)
         {
             if (i < dinos.Count)
             {
-                leaderboard.GetChild(i).gameObject.SetActive(true);
+                leaderboardElements[i].gameObject.SetActive(true);
+                leaderboardElements[i].text = $"{dinos[i].GetDinoNickname()}";
                 continue;
             }
 
-            leaderboard.GetChild(i).gameObject.SetActive(false);
+            leaderboardElements[i].gameObject.SetActive(false);
         }
+
+        UpdateReadyCount();
+    }
+
+    #endregion
+
+    #region GAME HANDLERS
+
+    public void ToggleReady()
+    {
+        myMultiplayerDino.ToggleReady();
+    }
+
+    public void UpdateReadyCount()
+    {
+        int _pReady = 0;
+        foreach (MultiplayerDino _d in dinos)
+            if (_d.ready) _pReady++;
+
+        txt_playersReady.text = $"PLAYERS READY\n{_pReady}/{dinos.Count}";
+
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        if (_pReady == dinos.Count &&
+            _pReady >= 2)
+            startGameButton.SetActive(true);
+        else
+            startGameButton.SetActive(false);
+    }
+
+    public override void StartGame()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+
+        pv.RPC("RPC_StartGame", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void RPC_StartGame()
+    {
+        HUD_startGame.SetActive(false);
+        startGameButton.SetActive(false);
+        HUD_ingame.SetActive(true);
+    }
+
+
+    #endregion
+
+    public MultiplayerDino GetMyDino()
+    {
+        return myMultiplayerDino;
     }
 
 
