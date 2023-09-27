@@ -27,6 +27,11 @@ public class MenuManager : MonoBehaviour
 
     private int singleplayerSceneID = 1;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     private void Start()
     {
         LoadSettings();

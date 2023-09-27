@@ -5,21 +5,23 @@ using UnityEngine;
 
 public class ParallaxEffect : MonoBehaviour
 {
-    [SerializeField] private float vel = 10f;
+    [SerializeField] protected float vel = 10f;
 
-    [SerializeField] private GameObject[] obstacles;
-    [SerializeField] private Transform[] grounds;
-    [SerializeField] private Transform[] backgroundObjs;
+    [SerializeField] protected GameObject[] obstacles;
+    [SerializeField] protected Transform[] grounds;
+    [SerializeField] protected Transform[] backgroundObjs;
+    [SerializeField] protected LayerMask groundLayer;
 
     // ground
-    private float groundSize = 38.0625f;
+    protected float groundSize = 38.0625f;
     // -50f og
-    private float groundMaxScroll = -50f;
-    private Vector2 groundNewPos = Vector2.zero;
+    protected float groundMaxScroll = -50f;
+    protected Vector2 groundNewPos = Vector2.zero;
 
     // obstacle
-    private Vector2 placeRaycastPos = new Vector2(49f, 0);
-    private float obstaclePlaceTimer = 0f;
+    protected Vector2 placeRaycastPos = new Vector2(49f, 0);
+    protected float obstaclePlaceTimer = 0f;
+    protected bool spawningObstacle = false;
 
     // background
     // -15f og
@@ -27,25 +29,27 @@ public class ParallaxEffect : MonoBehaviour
     private float backgroundReplaceTimer = 0f;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         this.enabled = false;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         GroundParallax();
         ObstacleHandler();
     }
 
-    private void LateUpdate()
+    protected virtual void LateUpdate()
     {
         BackgroundParallax();
     }
 
-    private void BackgroundParallax()
+    protected void BackgroundParallax()
     {
         // WAW
+        if (backgroundObjs.Length <= 0) return;
+
         backgroundReplaceTimer += 1f * Time.deltaTime;
 
         if (backgroundReplaceTimer < 1f)
@@ -67,29 +71,50 @@ public class ParallaxEffect : MonoBehaviour
     }
 
 
-    private void ObstacleHandler()
+    protected virtual void ObstacleHandler()
     {
+        if (obstacles.Length <= 0) return;
+        if (spawningObstacle) return;
+
         obstaclePlaceTimer -= 1f * Time.deltaTime;
 
         if (obstaclePlaceTimer > 0f)
             return;
 
-        RaycastHit2D _hit = Physics2D.Raycast(placeRaycastPos, Vector2.down, Mathf.Infinity);
+        RaycastHit2D _hit = Physics2D.Raycast(placeRaycastPos, Vector2.down, Mathf.Infinity, groundLayer);
 
         if (!_hit)
             throw new Exception("sem chão??");
 
+        spawningObstacle = true;
+        StartCoroutine(SpawnObstacle(_hit));
+    }
+
+    protected virtual IEnumerator SpawnObstacle(RaycastHit2D _hit)
+    {
         // y = -2.93375
         Vector2 _newPos = new Vector2(_hit.point.x, -2.93375f);
-        Instantiate(obstacles[UnityEngine.Random.Range(0, obstacles.Length)], 
+        int _chosenObstID = UnityEngine.Random.Range(0, obstacles.Length);
+        float _timeToWait = 0.75f * GameManager.difficulty;
+
+        if (_chosenObstID >= 6)
+            yield return new WaitForSeconds(_timeToWait);
+
+        Instantiate(obstacles[_chosenObstID],
             _newPos, Quaternion.identity, _hit.transform);
 
-        obstaclePlaceTimer = UnityEngine.Random.Range(0.5f, 1.25f) + (GameManager.difficulty / 2);
+        obstaclePlaceTimer = UnityEngine.Random.Range(0.75f, 1.75f) * GameManager.difficulty;
+        if (_chosenObstID >= 6)
+            obstaclePlaceTimer -= _timeToWait / 2;
+        spawningObstacle = false;
     }
 
 
-    private void GroundParallax()
+
+    protected void GroundParallax()
     {
+        if (grounds.Length <= 0) return;
+
         for (int i = 0; i < grounds.Length; i++)
         {
             groundNewPos = grounds[i].position;

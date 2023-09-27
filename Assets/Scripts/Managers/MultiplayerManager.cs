@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class MultiplayerManager : GameManager
     [Header("Multiplayer stuff")]
     [SerializeField] private Text[] leaderboardElements;
     [SerializeField] private PhotonView pv;
+    [SerializeField] private MultiplayerParallaxEffect multPEffect;
 
     [Header("Pre-game assignables")]
     [SerializeField] private Text txt_playersReady;
@@ -44,10 +46,30 @@ public class MultiplayerManager : GameManager
     }
 
     #region AO ENTRAR/SAIR
+
     public void OnMyDinoSpawned(MultiplayerDino _dino)
     {
         myMultiplayerDino = _dino;
+        RepositionCamera();
     }
+
+    private void RepositionCamera()
+    {
+        cam = Camera.main.transform;
+
+        if (cam == null)
+            throw new Exception("Erro ao validar a cam");
+
+        Vector2 _screenBorders = Camera.main.ScreenToWorldPoint(
+            new Vector2(Screen.width, Screen.height));
+        Vector3 _newPos = myMultiplayerDino.transform.position;
+        _newPos.z = cam.position.z;
+        _newPos.y = cam.position.y;
+        _newPos.x += _screenBorders.x - 5.5f;
+
+        cam.position = _newPos;
+    }
+
 
     public void OnDinoJoined()
     {
@@ -139,7 +161,7 @@ public class MultiplayerManager : GameManager
             return;
 
         if (_pReady == dinos.Count &&
-            _pReady >= 2)
+            _pReady >= 1)
             startGameButton.SetActive(true);
         else
             startGameButton.SetActive(false);
@@ -149,15 +171,23 @@ public class MultiplayerManager : GameManager
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
 
-        pv.RPC("RPC_StartGame", RpcTarget.All);
+        pv.RPC("RPC_StartGame", RpcTarget.All, PhotonNetwork.ServerTimestamp);
     }
 
     [PunRPC]
-    private void RPC_StartGame()
+    private void RPC_StartGame(int _sentTimestamp)
     {
+        difficulty = 1f;
+        if (!PhotonNetwork.IsMasterClient)
+            multPEffect.CompensateForLag(_sentTimestamp);
+
         HUD_startGame.SetActive(false);
         startGameButton.SetActive(false);
         HUD_ingame.SetActive(true);
+
+        multPEffect.SetStatus(true);
+
+        started = true;
     }
 
 

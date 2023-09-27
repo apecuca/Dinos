@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     private float score = 0f;
     private int highscore = 0;
-    private bool started = false;
+    protected bool started = false;
     private bool paused = false;
 
     [SerializeField] private Dino myDino;
@@ -25,11 +25,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text lb_currentScore;
     [SerializeField] private Text lb_highscore;
     
-    Transform cam = null;
+    protected Transform cam = null;
     private float increaseDiffTimer = 0f;
     private float maxDifficulty = 7.5f;
 
-    public static float difficulty { get; private set; } = 0f;
+    public static float difficulty { get; protected set; } = 0f;
     public static GameManager instance { get; private set; }
 
     protected virtual void Awake()
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
 
     // One-frame methods
 
-    private void RepositionDino()
+    protected virtual void RepositionDino()
     {
         cam = Camera.main.transform;
 

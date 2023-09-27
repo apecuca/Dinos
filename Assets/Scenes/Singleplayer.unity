@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b509758d4e08abf4885eaa438e3e0e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  immortal: 0
+  immortal: 1
   pcInputs: 1
   standingCol: {fileID: 617244151}
   crouchingCol: {fileID: 2119016071}
@@ -2915,7 +2915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97394d8402cae9246aac9e31b104395f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vel: 15
+  vel: 13.5
   obstacles:
   - {fileID: 8189885783679301053, guid: 5e1dffc1949fae54096c0c9fb3553879, type: 3}
   - {fileID: 8189885783679301053, guid: 2e3afa68413ca5248b32cf2459bb164b, type: 3}
@@ -2940,6 +2940,9 @@ MonoBehaviour:
   - {fileID: 1436419885}
   - {fileID: 690420020}
   - {fileID: 395521501}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1499370894
 GameObject:
   m_ObjectHideFlags: 0

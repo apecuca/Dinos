@@ -2925,6 +2925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1324055430}
   - component: {fileID: 1324055431}
+  - component: {fileID: 1324055433}
   - component: {fileID: 1324055432}
   m_Layer: 0
   m_Name: Managers
@@ -2941,7 +2942,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324055429}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.009831034, y: 2.8149006, z: 8.992211}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2977,6 +2978,7 @@ MonoBehaviour:
   - {fileID: 1640576867}
   - {fileID: 1723947227}
   pv: {fileID: 1324055432}
+  multPEffect: {fileID: 1324055433}
   txt_playersReady: {fileID: 1168294286}
   startGameButton: {fileID: 1921102289}
 --- !u!114 &1324055432
@@ -3001,6 +3003,39 @@ MonoBehaviour:
   sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1324055433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324055429}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3947cf542ce3cf14db15cd28230e8801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vel: 13.5
+  obstacles:
+  - {fileID: 8189885783679301053, guid: 5e1dffc1949fae54096c0c9fb3553879, type: 3}
+  - {fileID: 8189885783679301053, guid: 2e3afa68413ca5248b32cf2459bb164b, type: 3}
+  - {fileID: 8189885783679301053, guid: 288dc99e337d4174c93c73d0fc71364f, type: 3}
+  - {fileID: 8189885783679301053, guid: 7c72d1bc82fbbcd4ca087d8db80c1a67, type: 3}
+  - {fileID: 8189885783679301053, guid: 3f9743aad1f658b4da1881d15086a44b, type: 3}
+  - {fileID: 8189885783679301053, guid: 2de56e9f04fd47f48b8d8524f4e64585, type: 3}
+  - {fileID: 2579298713459908814, guid: 223865eab004e694f9aa0244ee17b116, type: 3}
+  - {fileID: 4873896201504915182, guid: 0986e82998a69d8468e85d3dc591924a, type: 3}
+  - {fileID: 6710183791046862211, guid: e7484a213c9719448bc121ae010abae5, type: 3}
+  grounds:
+  - {fileID: 414893433}
+  - {fileID: 572187454}
+  - {fileID: 1318059551}
+  - {fileID: 844558051}
+  backgroundObjs: []
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  pv: {fileID: 1324055432}
 --- !u!1 &1329354638
 GameObject:
   m_ObjectHideFlags: 0

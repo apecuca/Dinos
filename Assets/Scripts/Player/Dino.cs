@@ -168,7 +168,7 @@ public class Dino : MonoBehaviour
             rb.velocity = Vector3.zero;
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         GameManager.instance.Die();
         this.enabled = false;
