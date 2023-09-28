@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class MultiplayerManager : GameManager
 {
     [Header("Multiplayer stuff")]
-    [SerializeField] private Text[] leaderboardElements;
+    [SerializeField] private Text[] leaderboardNicknames;
+    [SerializeField] private Text[] leaderboardScores;
     [SerializeField] private PhotonView pv;
     [SerializeField] private MultiplayerParallaxEffect multPEffect;
 
@@ -18,6 +19,8 @@ public class MultiplayerManager : GameManager
 
     private MultiplayerDino myMultiplayerDino;
     private List<MultiplayerDino> dinos = new List<MultiplayerDino>();
+
+    private float updateScoreTimer = 0f;
 
     public static MultiplayerManager instance { get; private set; }
 
@@ -38,11 +41,22 @@ public class MultiplayerManager : GameManager
         HUD_paused.SetActive(false);
 
         this.enabled = false;
+
+        difficulty = 0;
+        highscore = 0;
+        if (SaveGame.TemSave())
+            highscore = SaveInfo.GetInstance().GetHighscore();
+        ScoreHandler();
     }
 
     protected override void Update()
     {
         //base.Update();
+
+        if (!started) return;
+
+        ScoreHandler();
+        //UpdateLeaderboard();
     }
 
     #region AO ENTRAR/SAIR
@@ -83,6 +97,7 @@ public class MultiplayerManager : GameManager
         if (myMultiplayerDino == null) return;
 
         myMultiplayerDino.UpdateCosmetics();
+        myMultiplayerDino.UpdateReady();
         UpdateDinoList();
     }
 
@@ -123,21 +138,65 @@ public class MultiplayerManager : GameManager
     {
         if (!PhotonNetwork.IsConnected) return;
         if (!PhotonNetwork.InRoom) return;
-        if (leaderboardElements.Length < 8) return;
+        if (leaderboardNicknames.Length < 8) return;
 
-        for (int i = 0; i < leaderboardElements.Length; i++)
+        for (int i = 0; i < leaderboardNicknames.Length; i++)
         {
             if (i < dinos.Count)
             {
-                leaderboardElements[i].gameObject.SetActive(true);
-                leaderboardElements[i].text = $"{dinos[i].GetDinoNickname()}";
+                leaderboardNicknames[i].gameObject.SetActive(true);
+                leaderboardNicknames[i].text = $"{dinos[i].GetDinoNickname()}";
+
+                int _intScore = (int)dinos[i].GetScore();
+                string _scoreTxt = $"00000";
+                _scoreTxt = _scoreTxt.Remove(0, _intScore.ToString().Length);
+                leaderboardScores[i].text = $"{_scoreTxt}{_intScore}";
                 continue;
             }
 
-            leaderboardElements[i].gameObject.SetActive(false);
+            leaderboardNicknames[i].gameObject.SetActive(false);
         }
 
         UpdateReadyCount();
+    }
+
+    public void UpdateLeaderboardStats()
+    {
+        if (!PhotonNetwork.IsConnected) return;
+        if (!PhotonNetwork.InRoom) return;
+        if (leaderboardScores.Length < 8) return;
+
+        for (int i = 0; i < leaderboardScores.Length; i++)
+        {
+            if (i >= dinos.Count)
+            {
+                i = leaderboardScores.Length;
+                continue;
+            }
+
+            int _intScore = (int)dinos[i].GetScore();
+            string _scoreTxt = $"00000";
+            _scoreTxt = _scoreTxt.Remove(0, _intScore.ToString().Length);
+
+            leaderboardScores[i].text = $"{_scoreTxt}{_intScore}";
+        }
+
+    }
+
+
+    protected override void ScoreHandler()
+    {
+        //base.ScoreHandler();
+        if (myMultiplayerDino.dead) return;
+
+        myMultiplayerDino.AddToScore(scorePerFrame * difficulty * Time.deltaTime);
+
+        updateScoreTimer += 1f * difficulty * Time.deltaTime;
+
+        if (updateScoreTimer < 1f) return;
+
+        myMultiplayerDino.UpdateScore();
+        updateScoreTimer = 0f;
     }
 
     #endregion
@@ -188,6 +247,7 @@ public class MultiplayerManager : GameManager
         multPEffect.SetStatus(true);
 
         started = true;
+        this.enabled = true;
     }
 
 

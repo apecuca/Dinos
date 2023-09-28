@@ -53,6 +53,7 @@ MonoBehaviour:
   - RPC_StartGame
   - RPC_UnlockDino
   - RPC_SpawnObstacle
+  - RPC_UpdateScore
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

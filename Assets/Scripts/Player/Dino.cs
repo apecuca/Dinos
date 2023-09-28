@@ -34,7 +34,8 @@ public class Dino : MonoBehaviour
     {
         grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
 
-        PCInputs();
+        if (pcInputs)
+            PCInputs();
         GravityHandler();
         CollidersHandler();
         JumpHandler();
@@ -44,8 +45,6 @@ public class Dino : MonoBehaviour
 
     protected void PCInputs()
     {
-        if (!pcInputs) return;
-
         JumpInteraction(Input.GetKey(KeyCode.UpArrow));
         SetCrouching(Input.GetKey(KeyCode.DownArrow));
     }

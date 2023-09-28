@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     private float score = 0f;
-    private int highscore = 0;
+    protected int highscore = 0;
     protected bool started = false;
     private bool paused = false;
 
@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     protected Transform cam = null;
     private float increaseDiffTimer = 0f;
     private float maxDifficulty = 7.5f;
+    protected float scorePerFrame = 4.5f;
 
     public static float difficulty { get; protected set; } = 0f;
     public static GameManager instance { get; private set; }
@@ -64,9 +65,9 @@ public class GameManager : MonoBehaviour
         ScoreHandler();
     }
 
-    private void ScoreHandler()
+    protected virtual void ScoreHandler()
     {
-        score += 4.5f * difficulty * Time.deltaTime;
+        score += scorePerFrame * difficulty * Time.deltaTime;
         int _intScore = (int)score;
         if (_intScore > highscore)
             highscore = _intScore;
@@ -77,8 +78,8 @@ public class GameManager : MonoBehaviour
         _highscoreTxt = _highscoreTxt.Remove(0, highscore.ToString().Length);
 
         lb_currentScore.text = $"{_scoreTxt}{_intScore}";
-        lb_highscore.text = $"{_highscoreTxt}{highscore}";
-        
+        if (lb_currentScore != null)
+            lb_highscore.text = $"{_highscoreTxt}{highscore}";
     }
 
     private void DifficultyHandler()

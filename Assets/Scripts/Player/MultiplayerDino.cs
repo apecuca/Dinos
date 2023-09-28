@@ -5,11 +5,14 @@ using Photon.Pun;
 
 public class MultiplayerDino : Dino
 {
+    public bool dead { get; private set; } = false;
+
     [Header("Multiplayer stuff")]
     [SerializeField] private TextMesh txt_nickname;
     [SerializeField] private PhotonView pv;
 
     private string nickname = "";
+    public float score = 0;
 
     public bool ready { get; private set; } = false;
 
@@ -29,15 +32,7 @@ public class MultiplayerDino : Dino
 
     protected override void Update()
     {
-        //base.Update();
-        grounded = Physics2D.Raycast(feet.position, Vector2.down, 0.1f, groundLayer);
-
-        PCInputs();
-        GravityHandler();
-        CollidersHandler();
-        JumpHandler();
-
-        AnimationsHandler();
+        base.Update();
     }
 
     private void OnDestroy()
@@ -53,6 +48,11 @@ public class MultiplayerDino : Dino
     public void ToggleReady()
     {
         ready = !ready;
+        UpdateReady();
+    }
+
+    public void UpdateReady()
+    {
         pv.RPC("RPC_SetReady", RpcTarget.All, ready);
     }
 
@@ -63,10 +63,35 @@ public class MultiplayerDino : Dino
         MultiplayerManager.instance.UpdateReadyCount();
     }
 
+    #endregion
+
+    #region DURING GAME
+
+    public void AddToScore(float _vl)
+    {
+        score += _vl;
+    }
+
+    public void UpdateScore()
+    {
+        pv.RPC("RPC_UpdateScore", RpcTarget.All, score);
+    }
+
+    [PunRPC]
+    private void RPC_UpdateScore(float _vl)
+    {
+        if (!pv.IsMine)
+            score = _vl;
+        MultiplayerManager.instance.UpdateLeaderboardStats();
+    }
+
+    public float GetScore()
+    {
+        return score;
+    }
 
 
     #endregion
-
 
     #region COSMETICS
 
@@ -93,7 +118,7 @@ public class MultiplayerDino : Dino
     }
 
     #endregion
-
+    
 
     // MISC STUFF
 

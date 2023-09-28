@@ -2955,7 +2955,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324055429}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6fc2005e2cdb7241b52aa9cb35f5b4a, type: 3}
   m_Name: 
@@ -2968,7 +2968,7 @@ MonoBehaviour:
   HUD_startGame: {fileID: 1161242555}
   lb_currentScore: {fileID: 0}
   lb_highscore: {fileID: 0}
-  leaderboardElements:
+  leaderboardNicknames:
   - {fileID: 145252059}
   - {fileID: 117389964}
   - {fileID: 808785781}
@@ -2977,6 +2977,15 @@ MonoBehaviour:
   - {fileID: 1493995630}
   - {fileID: 1640576867}
   - {fileID: 1723947227}
+  leaderboardScores:
+  - {fileID: 310227057}
+  - {fileID: 503942093}
+  - {fileID: 1285944593}
+  - {fileID: 1123531858}
+  - {fileID: 1821049763}
+  - {fileID: 1767944555}
+  - {fileID: 605435125}
+  - {fileID: 1839070174}
   pv: {fileID: 1324055432}
   multPEffect: {fileID: 1324055433}
   txt_playersReady: {fileID: 1168294286}

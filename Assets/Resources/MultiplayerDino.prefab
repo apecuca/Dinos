@@ -277,6 +277,7 @@ MonoBehaviour:
   anim: {fileID: 629936786324120523}
   txt_nickname: {fileID: 2291778677983427464}
   pv: {fileID: 8853834397223374301}
+  score: 0
 --- !u!114 &8853834397223374301
 MonoBehaviour:
   m_ObjectHideFlags: 0
