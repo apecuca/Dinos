@@ -98,12 +98,14 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
             return;
         }
 
-
         string _roomName;
         string _nickname = SaveInfo.GetInstance().GetNickname();
         if (_nickname != "" &&
             _nickname != null)
-            _roomName = $"{_nickname}'s room";
+        {
+            int _roomNumber = Random.Range(0, 1000);
+            _roomName = $"{_nickname}'s room {_roomNumber}";
+        }
         else
             _roomName = $"Rando's room {Random.Range(0, 1000)}";
         PhotonNetwork.CreateRoom(_roomName, GetRoomOps());

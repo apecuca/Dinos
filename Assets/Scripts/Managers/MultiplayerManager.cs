@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class MultiplayerManager : GameManager
 {
     [Header("Multiplayer stuff")]
+    [SerializeField] private GameObject btn_restart;
     [SerializeField] private Text[] leaderboardNicknames;
     [SerializeField] private Text[] leaderboardScores;
     [SerializeField] private Text txt_endgame;
@@ -41,12 +42,16 @@ public class MultiplayerManager : GameManager
         HUD_startGame.SetActive(true);
         HUD_paused.SetActive(false);
 
+        startGameButton.SetActive(false);
+
         this.enabled = false;
 
         difficulty = 0;
-        highscore = 0;
-        if (SaveGame.TemSave())
-            highscore = SaveInfo.GetInstance().GetHighscore();
+
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        btn_restart.SetActive(true);
     }
 
     protected override void Update()
@@ -55,6 +60,7 @@ public class MultiplayerManager : GameManager
 
         if (!started) return;
 
+        DifficultyHandler();
         ScoreHandler();
         //UpdateLeaderboard();
     }
@@ -85,7 +91,6 @@ public class MultiplayerManager : GameManager
         cam.position = _newPos;
     }
 
-
     public void OnDinoJoined()
     {
         pv.RPC("RPC_OnDinoJoined", RpcTarget.All);
@@ -95,6 +100,16 @@ public class MultiplayerManager : GameManager
     private void RPC_OnDinoJoined()
     {
         // isso aqui roda em todos os GameManagers assim que um dino termina de nascer
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Transform[] grounds = multPEffect.GetGrounds();
+            Vector3[] poss = new Vector3[grounds.Length];
+            for (int i = 0; i < grounds.Length; i++)
+                poss[i] = grounds[i].position;
+            pv.RPC("RPC_UpdateGroundPositions", RpcTarget.Others, poss);
+        }
+
+
         if (myMultiplayerDino == null) return;
 
         myMultiplayerDino.UpdateCosmetics();
@@ -102,17 +117,22 @@ public class MultiplayerManager : GameManager
         UpdateDinoList();
     }
 
+    [PunRPC]
+    private void RPC_UpdateGroundPositions(Vector3[] positions)
+    {
+        Transform[] grounds = multPEffect.GetGrounds();
+        for (int i = 0; i < grounds.Length; i++)
+            grounds[i].position = positions[i];
+    }
+
+
     public void UpdateDinoList()
     {
         pv.RPC("RPC_UpdateDinoList", RpcTarget.All);
     }
 
-    #endregion
-
-    #region LEADERBOARD
-
     [PunRPC]
-    public void RPC_UpdateDinoList()
+    private void RPC_UpdateDinoList()
     {
         GameObject[] _allDinos = GameObject.FindGameObjectsWithTag("Player");
 
@@ -134,6 +154,24 @@ public class MultiplayerManager : GameManager
 
         UpdateLeaderboard();
     }
+
+    public void OnMasterSwitched()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            btn_restart.SetActive(true);
+        }
+        else
+        {
+            btn_restart.SetActive(false);
+        }
+    }
+
+
+
+    #endregion
+
+    #region LEADERBOARD
 
     public void UpdateLeaderboard()
     {
@@ -204,6 +242,29 @@ public class MultiplayerManager : GameManager
 
     #region GAME HANDLERS
 
+    protected override void DifficultyHandler()
+    {
+        //base.DifficultyHandler();
+        if (difficulty >= maxDifficulty) return;
+
+        increaseDiffTimer += 1f * Time.deltaTime;
+
+        if (increaseDiffTimer < 1f) return;
+
+        difficulty += difficultyPerSec;
+        increaseDiffTimer = 0f;
+
+        pv.RPC("RPC_UpdateDifficulty", RpcTarget.Others, difficulty, PhotonNetwork.GetPing(), PhotonNetwork.ServerTimestamp);
+    }
+
+    [PunRPC]
+    private void RPC_UpdateDifficulty(float _diff, int _hostLatency, int _sentTimestamp)
+    {
+        difficulty = _diff;
+        multPEffect.CompensateForLag(_hostLatency, _sentTimestamp);
+    }
+
+
     public void ToggleReady()
     {
         myMultiplayerDino.ToggleReady();
@@ -222,9 +283,7 @@ public class MultiplayerManager : GameManager
 
         if (_pReady == dinos.Count &&
             _pReady >= 2)
-            startGameButton.SetActive(true);
-        else
-            startGameButton.SetActive(false);
+            StartGame();
     }
 
     public override void StartGame()
@@ -320,6 +379,29 @@ public class MultiplayerManager : GameManager
 
         txt_endgame.text = _txt;
     }
+
+    public override void RestartGame()
+    {
+        //base.RestartGame();
+        pv.RPC("RPC_RestartGame", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void RPC_RestartGame()
+    {
+        multPEffect.DestroyAllObstacles();
+        myMultiplayerDino.ResetDino();
+
+        HUD_ingame.SetActive(true);
+        HUD_gameover.SetActive(false);
+        HUD_startGame.SetActive(true);
+
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        PhotonNetwork.CurrentRoom.IsOpen = true;
+    }
+
 
 
     #endregion

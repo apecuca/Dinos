@@ -2888,6 +2888,7 @@ MonoBehaviour:
   tog_sfx: {fileID: 637580597}
   inp_nickname: {fileID: 1340178191}
   photonLobby: {fileID: 1489043635}
+  lb_version: {fileID: 1721098474}
 --- !u!114 &1489043635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3883,7 +3884,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Dinos v0.2d
+  m_Text: Dinos v0.0.0.0.0.ZERO
 --- !u!222 &1721098475
 CanvasRenderer:
   m_ObjectHideFlags: 0

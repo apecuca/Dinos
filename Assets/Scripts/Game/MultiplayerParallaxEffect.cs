@@ -9,9 +9,13 @@ public class MultiplayerParallaxEffect : ParallaxEffect
     [Header("Multiplayer stuff")]
     [SerializeField] private PhotonView pv;
 
+    private float backgroundRightScroll = 30;
+
     protected override void Awake()
     {
         base.Awake();
+        //-20 <
+        // 30 >
     }
 
     protected override void Update()
@@ -23,6 +27,37 @@ public class MultiplayerParallaxEffect : ParallaxEffect
             return;
 
         ObstacleHandler();
+    }
+
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+    }
+
+    protected override void BackgroundParallax()
+    {
+        //base.BackgroundParallax();
+        // WAW
+        if (backgroundObjs.Length <= 0) return;
+
+        backgroundReplaceTimer += 1f * Time.deltaTime;
+
+        if (backgroundReplaceTimer < 1f)
+            return;
+
+        for (int i = 0; i < backgroundObjs.Length; i++)
+        {
+            if (backgroundObjs[i].position.x > backgroundMaxScroll)
+                continue;
+
+            float _xDiff = Mathf.Abs(backgroundObjs[i].position.x - backgroundMaxScroll);
+            Vector2 _newPos = new Vector2(backgroundRightScroll - _xDiff, backgroundObjs[i].position.y);
+
+            backgroundObjs[i].transform.position = _newPos;
+        }
+
+
+        backgroundReplaceTimer = 0f;
     }
 
     public void CompensateForLag(int _hostLatency, int _sentTimestamp)
@@ -40,32 +75,12 @@ public class MultiplayerParallaxEffect : ParallaxEffect
         }
     }
 
-    /*
-    protected override void ObstacleHandler()
-    {
-        //base.ObstacleHandler();
-        if (obstacles.Length <= 0) return;
-
-        obstaclePlaceTimer -= 1f * Time.deltaTime;
-
-        if (obstaclePlaceTimer > 0f)
-            return;
-
-        RaycastHit2D _hit = Physics2D.Raycast(placeRaycastPos, Vector2.down, Mathf.Infinity);
-
-        if (!_hit)
-            throw new Exception("sem chão??");
-
-        spawningObstacle = true;
-        StartCoroutine(SpawnObstacle(_hit));
-    }
-    */
-
     protected override IEnumerator SpawnObstacle(RaycastHit2D _hit)
     {
+        // y = -2.93375
         Vector2 _newPos = new Vector2(_hit.point.x, -2.93375f);
         int _chosenObstID = UnityEngine.Random.Range(0, obstacles.Length);
-        float _timeToWait = 0.75f * GameManager.difficulty;
+        float _timeToWait = (1.5f * GameManager.difficulty) - lastObstTimer;
         int _hitGroundID = -1;
 
         if (_chosenObstID >= 6)
@@ -82,9 +97,11 @@ public class MultiplayerParallaxEffect : ParallaxEffect
 
         pv.RPC("RPC_SpawnObstacle", RpcTarget.All, _chosenObstID, _newPos, _hitGroundID);
 
-        obstaclePlaceTimer = UnityEngine.Random.Range(0.75f, 1.75f) * GameManager.difficulty;
+        obstaclePlaceTimer = UnityEngine.Random.Range(0.55f, 1.25f) * GameManager.difficulty;
         if (_chosenObstID >= 6)
-            obstaclePlaceTimer -= _timeToWait / 2;
+            obstaclePlaceTimer -= _timeToWait;
+
+        lastObstTimer = obstaclePlaceTimer;
         spawningObstacle = false;
     }
 
@@ -103,4 +120,17 @@ public class MultiplayerParallaxEffect : ParallaxEffect
         //
     }
 
+    public Transform[] GetGrounds()
+    {
+        return grounds;
+    }
+
+    /*
+    protected override void OnDrawGizmos()
+    {
+        backgroundMaxScroll = -20;
+        base.OnDrawGizmos();
+        Gizmos.DrawRay(new Vector3(backgroundRightScroll, 0, 0), Vector3.down * 5f);
+    }
+    */
 }

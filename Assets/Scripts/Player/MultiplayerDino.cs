@@ -110,7 +110,14 @@ public class MultiplayerDino : Dino
     {
         //base.Die();
         UpdateScore();
+        SoundManager.instance.PlayDied();
+
         pv.RPC("RPC_Die", RpcTarget.All);
+
+        if (!SaveGame.TemSave()) return;
+        if (score < SaveInfo.GetInstance().GetHighscore()) return;
+        SaveInfo.GetInstance().SetHighscore((int)score);
+        SaveInfo.GetInstance().Salvar();
     }
 
     [PunRPC]
@@ -186,14 +193,21 @@ public class MultiplayerDino : Dino
         _c.a = 1f;
         spr.color = _c;
 
+        score = 0;
+
         dead = false;
         winner = false;
+        ready = false;
+
+        UpdateScore();
+        UpdateReady();
     }
 
 
     protected override void OnTriggerEnter2D(Collider2D _col)
     {
         if (winner) return;
+        if (dead) return;
         if (!pv.IsMine) return;
 
 

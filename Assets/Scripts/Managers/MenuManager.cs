@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
 
     [Header("Assignables")]
     [SerializeField] private PhotonLobby photonLobby;
+    [SerializeField] private Text lb_version;
     
 
     private int singleplayerSceneID = 1;
@@ -36,6 +37,7 @@ public class MenuManager : MonoBehaviour
     {
         LoadSettings();
         LoadCustomization();
+        lb_version.text = $"Dinos v{Application.version}";
 
         GotoHUD(0);
     }
@@ -149,6 +151,10 @@ public class MenuManager : MonoBehaviour
     {
         SaveInfo.GetInstance().ResetarSave();
 
+        tog_sfx.isOn = true;
+        OnToggleSfxChanged();
+
+        GotoHUD(0);
         ToggleTextOverlay(true, "Save deletado com sucesso", true);
     }
 

@@ -79,6 +79,7 @@ public class Dino : MonoBehaviour
 
         jumping = true;
         rb.gravityScale = 0f;
+        SoundManager.instance.PlayJump();
     }
 
     protected void JumpHandler()
@@ -173,6 +174,8 @@ public class Dino : MonoBehaviour
         this.enabled = false;
         rb.velocity = Vector3.zero;
         rb.simulated = false;
+
+        SoundManager.instance.PlayDied();
 
         anim.SetTrigger("Died");
     }

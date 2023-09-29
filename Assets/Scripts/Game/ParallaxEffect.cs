@@ -21,12 +21,13 @@ public class ParallaxEffect : MonoBehaviour
     // obstacle
     protected Vector2 placeRaycastPos = new Vector2(49f, 0);
     protected float obstaclePlaceTimer = 0f;
+    protected float lastObstTimer = 0f;
     protected bool spawningObstacle = false;
 
     // background
     // -15f og
-    private float backgroundMaxScroll = -20f;
-    private float backgroundReplaceTimer = 0f;
+    protected float backgroundMaxScroll = -20f;
+    protected float backgroundReplaceTimer = 0f;
 
 
     protected virtual void Awake()
@@ -45,7 +46,7 @@ public class ParallaxEffect : MonoBehaviour
         BackgroundParallax();
     }
 
-    protected void BackgroundParallax()
+    protected virtual void BackgroundParallax()
     {
         // WAW
         if (backgroundObjs.Length <= 0) return;
@@ -76,7 +77,7 @@ public class ParallaxEffect : MonoBehaviour
         if (obstacles.Length <= 0) return;
         if (spawningObstacle) return;
 
-        obstaclePlaceTimer -= 1f * Time.deltaTime;
+        obstaclePlaceTimer -= 1f * GameManager.difficulty * Time.deltaTime;
 
         if (obstaclePlaceTimer > 0f)
             return;
@@ -95,7 +96,7 @@ public class ParallaxEffect : MonoBehaviour
         // y = -2.93375
         Vector2 _newPos = new Vector2(_hit.point.x, -2.93375f);
         int _chosenObstID = UnityEngine.Random.Range(0, obstacles.Length);
-        float _timeToWait = 0.75f * GameManager.difficulty;
+        float _timeToWait = (1.5f * GameManager.difficulty) - lastObstTimer;
 
         if (_chosenObstID >= 6)
             yield return new WaitForSeconds(_timeToWait);
@@ -103,9 +104,13 @@ public class ParallaxEffect : MonoBehaviour
         Instantiate(obstacles[_chosenObstID],
             _newPos, Quaternion.identity, _hit.transform);
 
-        obstaclePlaceTimer = UnityEngine.Random.Range(0.75f, 1.75f) * GameManager.difficulty;
+        obstaclePlaceTimer = UnityEngine.Random.Range(0.55f, 1.25f) * GameManager.difficulty;
+        //obstaclePlaceTimer = 0.55f * GameManager.difficulty;
+        //obstaclePlaceTimer = 1.25f * GameManager.difficulty;
         if (_chosenObstID >= 6)
-            obstaclePlaceTimer -= _timeToWait / 2;
+            obstaclePlaceTimer -= _timeToWait;
+
+        lastObstTimer = obstaclePlaceTimer;
         spawningObstacle = false;
     }
 
@@ -160,18 +165,17 @@ public class ParallaxEffect : MonoBehaviour
         }
     }
 
-
-    private void OnDrawGizmos()
+    /*
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        //Gizmos.DrawWireSphere(new Vector3(groundMaxScroll, transform.position.y, 0), 1f);
-        //Gizmos.DrawWireSphere(new Vector3(-groundMaxScroll, transform.position.y, 0), 1f);
         Gizmos.DrawRay(new Vector3(groundMaxScroll, 0, 0), Vector3.down * 5f);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(new Vector3(backgroundMaxScroll, 0, 0), Vector3.down * 5f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawRay(placeRaycastPos, Vector3.down * 5f);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(new Vector3(backgroundMaxScroll, 0, 0), Vector3.down * 5f);
     }
+    */
 }

@@ -26,9 +26,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text lb_highscore;
     
     protected Transform cam = null;
-    private float increaseDiffTimer = 0f;
-    private float maxDifficulty = 7.5f;
+    protected float increaseDiffTimer = 0f;
+    protected float maxDifficulty = 5f;
     protected float scorePerFrame = 4.5f;
+    protected float difficultyPerSec = 0.0085f; // 0.0065
 
     public static float difficulty { get; protected set; } = 0f;
     public static GameManager instance { get; private set; }
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour
             lb_highscore.text = $"{_highscoreTxt}{highscore}";
     }
 
-    private void DifficultyHandler()
+    protected virtual void DifficultyHandler()
     {
         if (difficulty >= maxDifficulty) return;
 
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
 
         if (increaseDiffTimer < 1f) return;
 
-        difficulty += 0.0065f;
+        difficulty += difficultyPerSec;
         increaseDiffTimer = 0f;
     }
 
@@ -134,7 +135,7 @@ public class GameManager : MonoBehaviour
         myDino.ResetDino();
     }
 
-    public void RestartGame()
+    public virtual void RestartGame()
     {
         pEffect.DestroyAllObstacles();
 

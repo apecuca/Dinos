@@ -142,6 +142,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         base.OnMasterClientSwitched(newMasterClient);
+
+        MultiplayerManager.instance.OnMasterSwitched();
         //DisconnectPlayer();
     }
 
