@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b6ee1481f63a14cb1bebb9999c8ab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  immortal: 1
+  immortal: 0
   pcInputs: 1
   standingCol: {fileID: 629936784587836735}
   crouchingCol: {fileID: 629936784994308522}
@@ -276,8 +276,8 @@ MonoBehaviour:
   feet: {fileID: 629936785294665319}
   anim: {fileID: 629936786324120523}
   txt_nickname: {fileID: 2291778677983427464}
+  spr: {fileID: 629936786324120522}
   pv: {fileID: 8853834397223374301}
-  score: 0
 --- !u!114 &8853834397223374301
 MonoBehaviour:
   m_ObjectHideFlags: 0

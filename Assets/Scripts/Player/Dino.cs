@@ -198,7 +198,7 @@ public class Dino : MonoBehaviour
 
 
 
-    private void OnTriggerEnter2D(Collider2D _col)
+    protected virtual void OnTriggerEnter2D(Collider2D _col)
     {
         if (immortal) return;
         if (!_col.CompareTag("Obstacle")) return;

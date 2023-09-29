@@ -54,6 +54,10 @@ MonoBehaviour:
   - RPC_UnlockDino
   - RPC_SpawnObstacle
   - RPC_UpdateScore
+  - RPC_Die
+  - RPC_ResetDino
+  - RPC_EndGame
+  - RPC_ReviveWinner
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

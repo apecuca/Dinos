@@ -25,10 +25,11 @@ public class MultiplayerParallaxEffect : ParallaxEffect
         ObstacleHandler();
     }
 
-    public void CompensateForLag(int _sentTimestamp)
+    public void CompensateForLag(int _hostLatency, int _sentTimestamp)
     {
         // _roundTripTime is in ms
         float _timeBeforeExecution = ((float)(PhotonNetwork.ServerTimestamp - _sentTimestamp))/100;
+        _timeBeforeExecution += _hostLatency / 100;
 
         if (grounds.Length <= 0) return;
 

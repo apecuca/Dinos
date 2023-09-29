@@ -5,20 +5,23 @@ using Photon.Pun;
 
 public class MultiplayerDino : Dino
 {
+    private bool winner = false;
     public bool dead { get; private set; } = false;
 
     [Header("Multiplayer stuff")]
     [SerializeField] private TextMesh txt_nickname;
+    [SerializeField] private SpriteRenderer spr;
     [SerializeField] private PhotonView pv;
 
     private string nickname = "";
-    public float score = 0;
+    private float score = 0;
 
     public bool ready { get; private set; } = false;
 
     protected override void Start()
     {
         base.Start();
+        anim.SetTrigger("Started");
 
         if (!pv.IsMine)
         {
@@ -27,7 +30,6 @@ public class MultiplayerDino : Dino
         }
 
         this.enabled = true;
-        anim.SetTrigger("Started");
     }
 
     protected override void Update()
@@ -41,6 +43,7 @@ public class MultiplayerDino : Dino
         if (pv.IsMine) return;
 
         MultiplayerManager.instance.UpdateDinoList();
+        MultiplayerManager.instance.OnDinoDied();
     }
 
     #region PRE-POST GAME
@@ -61,6 +64,24 @@ public class MultiplayerDino : Dino
     {
         ready = _vl;
         MultiplayerManager.instance.UpdateReadyCount();
+    }
+
+    public void ReviveWinner()
+    {
+        pv.RPC("RPC_ReviveWinner", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void RPC_ReviveWinner()
+    {
+        winner = true;
+        dead = false;
+
+        Color _c = spr.color;
+        _c.a = 1f;
+        spr.color = _c;
+
+        MultiplayerManager.instance.ChangeTextToWinner();
     }
 
     #endregion
@@ -85,9 +106,24 @@ public class MultiplayerDino : Dino
         MultiplayerManager.instance.UpdateLeaderboardStats();
     }
 
-    public float GetScore()
+    protected override void Die()
     {
-        return score;
+        //base.Die();
+        UpdateScore();
+        pv.RPC("RPC_Die", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void RPC_Die()
+    {
+        Color _c = spr.color;
+        _c.a = 0.5f;
+        spr.color = _c;
+
+        dead = true;
+
+        if (pv.IsMine)
+            MultiplayerManager.instance.OnDinoDied();
     }
 
 
@@ -113,8 +149,6 @@ public class MultiplayerDino : Dino
     {
         nickname = _nickname;
         txt_nickname.text = $"{_nickname}";
-        if (!pv.IsMine)
-            anim.SetTrigger("Started");
     }
 
     #endregion
@@ -127,22 +161,42 @@ public class MultiplayerDino : Dino
         return nickname;
     }
 
+    public float GetScore()
+    {
+        return score;
+    }
+
     private void DisableEverything()
     {
         this.enabled = false;
-
         rb.simulated = false;
     }
 
-
-    /*
-    [PunRPC]
     public override void ResetDino()
     {
         //base.ResetDino();
 
-        anim.SetTrigger("Started");
+        pv.RPC("RPC_ResetDino", RpcTarget.All);
     }
-    */
 
+    [PunRPC]
+    private void RPC_ResetDino()
+    {
+        Color _c = spr.color;
+        _c.a = 1f;
+        spr.color = _c;
+
+        dead = false;
+        winner = false;
+    }
+
+
+    protected override void OnTriggerEnter2D(Collider2D _col)
+    {
+        if (winner) return;
+        if (!pv.IsMine) return;
+
+
+        base.OnTriggerEnter2D(_col);
+    }
 }

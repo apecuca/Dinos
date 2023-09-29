@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b509758d4e08abf4885eaa438e3e0e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  immortal: 1
+  immortal: 0
   pcInputs: 1
   standingCol: {fileID: 617244151}
   crouchingCol: {fileID: 2119016071}

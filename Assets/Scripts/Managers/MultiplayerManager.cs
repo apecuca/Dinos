@@ -10,6 +10,7 @@ public class MultiplayerManager : GameManager
     [Header("Multiplayer stuff")]
     [SerializeField] private Text[] leaderboardNicknames;
     [SerializeField] private Text[] leaderboardScores;
+    [SerializeField] private Text txt_endgame;
     [SerializeField] private PhotonView pv;
     [SerializeField] private MultiplayerParallaxEffect multPEffect;
 
@@ -46,7 +47,6 @@ public class MultiplayerManager : GameManager
         highscore = 0;
         if (SaveGame.TemSave())
             highscore = SaveInfo.GetInstance().GetHighscore();
-        ScoreHandler();
     }
 
     protected override void Update()
@@ -65,6 +65,7 @@ public class MultiplayerManager : GameManager
     {
         myMultiplayerDino = _dino;
         RepositionCamera();
+        ScoreHandler();
     }
 
     private void RepositionCamera()
@@ -220,7 +221,7 @@ public class MultiplayerManager : GameManager
             return;
 
         if (_pReady == dinos.Count &&
-            _pReady >= 1)
+            _pReady >= 2)
             startGameButton.SetActive(true);
         else
             startGameButton.SetActive(false);
@@ -230,15 +231,15 @@ public class MultiplayerManager : GameManager
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
 
-        pv.RPC("RPC_StartGame", RpcTarget.All, PhotonNetwork.ServerTimestamp);
+        pv.RPC("RPC_StartGame", RpcTarget.All, PhotonNetwork.GetPing(), PhotonNetwork.ServerTimestamp);
     }
 
     [PunRPC]
-    private void RPC_StartGame(int _sentTimestamp)
+    private void RPC_StartGame(int _hostLatency, int _sentTimestamp)
     {
         difficulty = 1f;
         if (!PhotonNetwork.IsMasterClient)
-            multPEffect.CompensateForLag(_sentTimestamp);
+            multPEffect.CompensateForLag(_hostLatency, _sentTimestamp);
 
         HUD_startGame.SetActive(false);
         startGameButton.SetActive(false);
@@ -248,6 +249,76 @@ public class MultiplayerManager : GameManager
 
         started = true;
         this.enabled = true;
+    }
+
+    public void OnDinoDied()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        int _dinosAlive = 0;
+        foreach (MultiplayerDino _d in dinos)
+            if (!_d.dead) _dinosAlive++;
+
+        if (_dinosAlive == 1)
+            EndGame();
+    }
+
+
+    private void EndGame()
+    {
+        pv.RPC("RPC_EndGame", RpcTarget.All);
+    }
+
+
+    [PunRPC]
+    private void RPC_EndGame()
+    {
+        if (!started) return;
+
+        started = false;
+        this.enabled = false;
+        difficulty = 0;
+        multPEffect.SetStatus(false);
+
+        UpdateLeaderboardStats();
+        string _txt = $"GAME OVER!\n";
+        if (!myMultiplayerDino.dead)
+            _txt += $"YOU WON!";
+        else
+            _txt += $"YOU LOST :(";
+        int _intScore = (int)myMultiplayerDino.GetScore();
+        string _scoreTxt = $"00000";
+        _scoreTxt = _scoreTxt.Remove(0, _intScore.ToString().Length);
+        _txt += $"\n\nSCORE: {_scoreTxt}{_intScore}";
+
+        txt_endgame.text = _txt;
+        HUD_ingame.SetActive(true);
+        HUD_paused.SetActive(false);
+        HUD_gameover.SetActive(true);
+
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        // Reviver caso o vencedor morra depois do jogo acabar
+        // pode acontecer com muito lag
+        foreach (MultiplayerDino _d in dinos)
+        {
+            if (!_d.dead) _d.ReviveWinner();
+            break;
+        } 
+    }
+
+    public void ChangeTextToWinner()
+    {
+        string _txt = $"GAME OVER!\n";
+        _txt += $"YOU WON!";
+        int _intScore = (int)myMultiplayerDino.GetScore();
+        string _scoreTxt = $"00000";
+        _scoreTxt = _scoreTxt.Remove(0, _intScore.ToString().Length);
+        _txt += $"\n\nSCORE: {_scoreTxt}{_intScore}";
+
+        txt_endgame.text = _txt;
     }
 
 
