@@ -124,6 +124,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         //print("Falhou em criar sala.");
+
         mng_menu.ToggleTextOverlay(true, $"Falha na criação de sala.\n{message}, errCod: {returnCode}", true);
     }
 

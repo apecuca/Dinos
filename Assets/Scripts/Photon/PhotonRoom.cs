@@ -93,7 +93,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         Vector2 _newPos = new Vector2(0, -2.93375f);
         if (!PhotonNetwork.IsMasterClient)
-            _newPos.x += Random.Range(-4f, 4f);
+            _newPos.x += Random.Range(-5.5f, 6.5f);
         GameObject _newDino = PhotonNetwork.Instantiate("MultiplayerDino",
             _newPos, Quaternion.identity);
 
@@ -128,15 +128,13 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         base.OnPlayerEnteredRoom(newPlayer);
-        //StartCoroutine(WaitAndUpdateDino());
-        //UpdatePlayerLists();
+        //
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         base.OnPlayerLeftRoom(otherPlayer);
-        //if (!otherPlayer.IsMasterClient)
-        //    UpdatePlayerLists();
+        //
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -144,7 +142,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         base.OnMasterClientSwitched(newMasterClient);
 
         MultiplayerManager.instance.OnMasterSwitched();
-        //DisconnectPlayer();
+        //
     }
 
     public void DisconnectPlayer()

@@ -56,7 +56,6 @@ public class SaveInfo
         sfxOn = true;
 
         Salvar();
-        //PlayerPrefs.Save();
     }
 
 

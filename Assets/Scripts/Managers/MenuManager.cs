@@ -131,7 +131,11 @@ public class MenuManager : MonoBehaviour
         {
             inp_nickname.placeholder.GetComponent<Text>().text = _savedNickname;
         }
-
+        else
+        {
+            inp_nickname.text = "";
+            inp_nickname.placeholder.GetComponent<Text>().text = "NICKNAME...";
+        }
     }
 
     // misc
@@ -159,9 +163,9 @@ public class MenuManager : MonoBehaviour
     {
         SaveInfo.GetInstance().ResetarSave();
 
+        // carregar settings para aplicar todas as coisas zeradas
         LoadSettings();
-        //tog_sfx.isOn = true;
-        //OnToggleSfxChanged();
+        LoadCustomization();
 
         GotoHUD(0);
         ToggleTextOverlay(true, "Save deletado com sucesso", true);

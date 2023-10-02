@@ -21,6 +21,7 @@ public class MultiplayerManager : GameManager
 
     private MultiplayerDino myMultiplayerDino;
     private List<MultiplayerDino> dinos = new List<MultiplayerDino>();
+    private MultiplayerCamera multCam;
 
     private float updateScoreTimer = 0f;
 
@@ -35,8 +36,6 @@ public class MultiplayerManager : GameManager
 
     protected override void Start()
     {
-        //base.Start();
-
         HUD_ingame.SetActive(true);
         HUD_gameover.SetActive(false);
         HUD_startGame.SetActive(true);
@@ -70,10 +69,16 @@ public class MultiplayerManager : GameManager
     public void OnMyDinoSpawned(MultiplayerDino _dino)
     {
         myMultiplayerDino = _dino;
-        RepositionCamera();
+        myMultiplayerDino.SetFreeMove(true);
+        //RepositionCamera();
+
+        multCam = Camera.main.gameObject.GetComponent<MultiplayerCamera>();
+        multCam.SetFollow(true, myMultiplayerDino.transform);
+
         ScoreHandler();
     }
 
+    /*
     private void RepositionCamera()
     {
         cam = Camera.main.transform;
@@ -82,7 +87,7 @@ public class MultiplayerManager : GameManager
             throw new Exception("Erro ao validar a cam");
 
         Vector2 _screenBorders = Camera.main.ScreenToWorldPoint(
-            new Vector2(Screen.width, Screen.height));
+            new Vector2(Screen.width, Screen.height)) - cam.position;
         Vector3 _newPos = myMultiplayerDino.transform.position;
         _newPos.z = cam.position.z;
         _newPos.y = cam.position.y;
@@ -90,6 +95,7 @@ public class MultiplayerManager : GameManager
 
         cam.position = _newPos;
     }
+    */
 
     public void OnDinoJoined()
     {
@@ -300,6 +306,9 @@ public class MultiplayerManager : GameManager
     [PunRPC]
     private void RPC_StartGame(int _hostLatency, int _sentTimestamp)
     {
+        myMultiplayerDino.SetFreeMove(false);
+        multCam.SetFollow(false, null);
+
         difficulty = 1f;
         if (!PhotonNetwork.IsMasterClient)
             multPEffect.CompensateForLag(_hostLatency, _sentTimestamp);
@@ -408,6 +417,8 @@ public class MultiplayerManager : GameManager
     {
         multPEffect.DestroyAllObstacles();
         myMultiplayerDino.ResetDino();
+        if (myMultiplayerDino.GetComponent<PhotonView>().IsMine)
+            multCam.SetFollow(true, myMultiplayerDino.transform);
 
         HUD_ingame.SetActive(true);
         HUD_gameover.SetActive(false);

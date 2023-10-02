@@ -58,17 +58,20 @@ public class Dino : MonoBehaviour
             return;
         }
         
-        if (!grounded && crouching)
+        if (!grounded)
         {
-            rb.gravityScale = gravityScale * 5; // * 4
+            if (crouching)
+                rb.gravityScale = gravityScale * 5; // * 5
+            else
+                rb.gravityScale = gravityScale;
             return;
         }
-
-        if (!grounded)
+        else
         {
             rb.gravityScale = gravityScale;
             return;
         }
+
     }
 
 
@@ -165,14 +168,21 @@ public class Dino : MonoBehaviour
         jumping = false;
 
         if (_force)
-            rb.velocity = Vector3.zero;
+        {
+            Vector3 _newVel = rb.velocity;
+            _newVel.y = 0;
+            rb.velocity = _newVel;
+        }
+            
     }
 
     protected virtual void Die()
     {
         GameManager.instance.Die();
         this.enabled = false;
-        rb.velocity = Vector3.zero;
+        Vector3 _newVel = rb.velocity;
+        _newVel.y = 0;
+        rb.velocity = _newVel;
         rb.simulated = false;
 
         SoundManager.instance.PlayDied();
@@ -184,7 +194,9 @@ public class Dino : MonoBehaviour
     {
         transform.position = ogPos;
         this.enabled = true;
-        rb.velocity = Vector3.zero;
+        Vector3 _newVel = rb.velocity;
+        _newVel.y = 0;
+        rb.velocity = _newVel;
         rb.simulated = true;
 
         crouching = false;
@@ -198,7 +210,6 @@ public class Dino : MonoBehaviour
     {
         ogPos = transform.position;
     }
-
 
 
     protected virtual void OnTriggerEnter2D(Collider2D _col)
