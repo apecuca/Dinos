@@ -30,6 +30,7 @@ public class MultiplayerDino : Dino
         }
 
         this.enabled = true;
+        spr.sortingOrder += 1;
     }
 
     protected override void Update()
@@ -48,9 +49,13 @@ public class MultiplayerDino : Dino
 
     #region PRE-POST GAME
 
-    public void ToggleReady()
+    public void ToggleReady(int _force = -1)
     {
         ready = !ready;
+        if (_force == 0)
+            ready = false;
+        else if (_force == 1)
+            ready = true;
         UpdateReady();
     }
 
@@ -80,8 +85,9 @@ public class MultiplayerDino : Dino
         Color _c = spr.color;
         _c.a = 1f;
         spr.color = _c;
-
-        MultiplayerManager.instance.ChangeTextToWinner();
+        
+        if (pv.IsMine)
+            MultiplayerManager.instance.ChangeTextToWinner();
     }
 
     #endregion
@@ -129,8 +135,7 @@ public class MultiplayerDino : Dino
 
         dead = true;
 
-        if (pv.IsMine)
-            MultiplayerManager.instance.OnDinoDied();
+        MultiplayerManager.instance.OnDinoDied();
     }
 
 

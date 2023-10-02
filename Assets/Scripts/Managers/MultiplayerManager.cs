@@ -300,6 +300,8 @@ public class MultiplayerManager : GameManager
         if (!PhotonNetwork.IsMasterClient)
             multPEffect.CompensateForLag(_hostLatency, _sentTimestamp);
 
+        myMultiplayerDino.ToggleReady(0);
+
         HUD_startGame.SetActive(false);
         startGameButton.SetActive(false);
         HUD_ingame.SetActive(true);
@@ -316,22 +318,30 @@ public class MultiplayerManager : GameManager
             return;
 
         int _dinosAlive = 0;
-        foreach (MultiplayerDino _d in dinos)
-            if (!_d.dead) _dinosAlive++;
+        int _lastDinoAlive = -1;
+        for (int i = 0; i < dinos.Count; i++)
+        {
+            if (dinos[i].dead)
+                continue;
+
+            _dinosAlive++;
+            _lastDinoAlive = i;
+        }
+
 
         if (_dinosAlive == 1)
-            EndGame();
+            EndGame(_lastDinoAlive);
     }
 
 
-    private void EndGame()
+    private void EndGame(int _lastDino)
     {
-        pv.RPC("RPC_EndGame", RpcTarget.All);
+        pv.RPC("RPC_EndGame", RpcTarget.All, _lastDino);
     }
 
 
     [PunRPC]
-    private void RPC_EndGame()
+    private void RPC_EndGame(int _lastDinoID)
     {
         if (!started) return;
 
@@ -340,7 +350,7 @@ public class MultiplayerManager : GameManager
         difficulty = 0;
         multPEffect.SetStatus(false);
 
-        UpdateLeaderboardStats();
+        myMultiplayerDino.UpdateScore();
         string _txt = $"GAME OVER!\n";
         if (!myMultiplayerDino.dead)
             _txt += $"YOU WON!";
@@ -356,16 +366,19 @@ public class MultiplayerManager : GameManager
         HUD_paused.SetActive(false);
         HUD_gameover.SetActive(true);
 
-        if (!PhotonNetwork.IsMasterClient)
-            return;
+        if (!PhotonNetwork.IsMasterClient) return;
+        if (_lastDinoID >= dinos.Count) return;
 
+        dinos[_lastDinoID].ReviveWinner();
         // Reviver caso o vencedor morra depois do jogo acabar
         // pode acontecer com muito lag
+        /*
         foreach (MultiplayerDino _d in dinos)
         {
             if (!_d.dead) _d.ReviveWinner();
             break;
         } 
+        */
     }
 
     public void ChangeTextToWinner()

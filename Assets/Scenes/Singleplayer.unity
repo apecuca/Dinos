@@ -506,6 +506,7 @@ MonoBehaviour:
     m_Bits: 256
   feet: {fileID: 942100714}
   anim: {fileID: 1627463309}
+  spr: {fileID: 1627463308}
 --- !u!1 &228493021
 GameObject:
   m_ObjectHideFlags: 0
@@ -2226,7 +2227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1161437841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3304,7 +3305,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1584858862
 RectTransform:
   m_ObjectHideFlags: 0
