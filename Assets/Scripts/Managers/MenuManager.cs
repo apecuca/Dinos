@@ -159,8 +159,9 @@ public class MenuManager : MonoBehaviour
     {
         SaveInfo.GetInstance().ResetarSave();
 
-        tog_sfx.isOn = true;
-        OnToggleSfxChanged();
+        LoadSettings();
+        //tog_sfx.isOn = true;
+        //OnToggleSfxChanged();
 
         GotoHUD(0);
         ToggleTextOverlay(true, "Save deletado com sucesso", true);

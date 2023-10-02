@@ -50,7 +50,13 @@ public class SaveInfo
     public void ResetarSave()
     {
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+
+        highscore = 0;
+        nickname = "";
+        sfxOn = true;
+
+        Salvar();
+        //PlayerPrefs.Save();
     }
 
 
