@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Profiling;
+using System.Diagnostics;
 
 public class MenuManager : MonoBehaviour
 {
@@ -24,7 +26,6 @@ public class MenuManager : MonoBehaviour
     [Header("Assignables")]
     [SerializeField] private PhotonLobby photonLobby;
     [SerializeField] private Text lb_version;
-    
 
     private int singleplayerSceneID = 1;
 
@@ -37,12 +38,19 @@ public class MenuManager : MonoBehaviour
     {
         LoadSettings();
         LoadCustomization();
-        lb_version.text = $"Dinos v{Application.version}";
+
+        string _versionText = $"Dinos ";
+        if (SystemInfo.deviceType == DeviceType.Desktop)
+            _versionText += "PC";
+        else if (SystemInfo.deviceType == DeviceType.Handheld)
+            _versionText += "MOBILE";
+        _versionText += $"_{Application.version}";
+
+        lb_version.text = _versionText;
 
         GotoHUD(0);
     }
 
-    
     // HUDs
 
     public void GotoSingleplayer()

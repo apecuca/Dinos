@@ -56,6 +56,7 @@ public class MultiplayerDino : Dino
             ready = false;
         else if (_force == 1)
             ready = true;
+
         UpdateReady();
     }
 

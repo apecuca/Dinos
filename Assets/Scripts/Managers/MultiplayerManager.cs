@@ -24,7 +24,7 @@ public class MultiplayerManager : GameManager
 
     private float updateScoreTimer = 0f;
 
-    public static MultiplayerManager instance { get; private set; }
+    public static new MultiplayerManager instance { get; private set; }
 
     protected override void Awake()
     {
@@ -275,6 +275,10 @@ public class MultiplayerManager : GameManager
         int _pReady = 0;
         foreach (MultiplayerDino _d in dinos)
             if (_d.ready) _pReady++;
+        if (myMultiplayerDino.ready)
+            txt_playersReady.color = Color.green;
+        else
+            txt_playersReady.color = Color.red;
 
         txt_playersReady.text = $"PLAYERS READY\n{_pReady}/{dinos.Count}";
 
