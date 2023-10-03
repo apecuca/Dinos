@@ -24,6 +24,7 @@ public class MultiplayerDino : Dino
     {
         base.Start();
         anim.SetTrigger("Started");
+        txt_nickname.gameObject.SetActive(!SaveInfo.GetInstance().GetHideNick());
 
         if (!pv.IsMine)
         {
@@ -95,7 +96,10 @@ public class MultiplayerDino : Dino
         spr.color = _c;
         
         if (pv.IsMine)
+        {
             MultiplayerManager.instance.ChangeTextToWinner();
+            SoundManager.instance.PlayVictory();
+        }
     }
 
     #endregion

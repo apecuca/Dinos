@@ -9,6 +9,7 @@ public class SaveGameInfo
     public int highscore;
     public string nickname;
     public bool sfxOn;
+    public bool hideNickname;
 }
 public class SaveGame
 {

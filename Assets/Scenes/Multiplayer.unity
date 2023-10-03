@@ -3725,8 +3725,8 @@ GameObject:
   - component: {fileID: 1324055430}
   - component: {fileID: 1324055431}
   - component: {fileID: 1324055433}
-  - component: {fileID: 1324055432}
   - component: {fileID: 1324055434}
+  - component: {fileID: 1324055432}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -3873,6 +3873,7 @@ MonoBehaviour:
   src: {fileID: 1062531806}
   clip_jump: {fileID: 8300000, guid: dc744ae27106fd94c924ce62a5921456, type: 3}
   clip_died: {fileID: 8300000, guid: 792847e02bde02a42974179171588ca5, type: 3}
+  clip_victory: {fileID: 8300000, guid: 6ac7bd9325b70fb41bbfa1f72d0ac454, type: 3}
 --- !u!1 &1329354638
 GameObject:
   m_ObjectHideFlags: 0

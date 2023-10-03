@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     protected float scorePerFrame = 4.5f;
     protected float difficultyPerSec = 0.0085f; // 0.0065
 
+    private float nextMark = 100;
+
     public static float difficulty { get; protected set; } = 0f;
     public static GameManager instance { get; private set; }
 
@@ -51,8 +53,11 @@ public class GameManager : MonoBehaviour
 
         PauseUnpause(false);
 
+        score = 0f;
         difficulty = 0f;
         highscore = 0;
+        nextMark = 100;
+
         if (SaveGame.TemSave())
             highscore = SaveInfo.GetInstance().GetHighscore();
         ScoreHandler();
@@ -81,6 +86,14 @@ public class GameManager : MonoBehaviour
         lb_currentScore.text = $"{_scoreTxt}{_intScore}";
         if (lb_currentScore != null)
             lb_highscore.text = $"{_highscoreTxt}{highscore}";
+
+        // MARCO DE SCORE
+        if (score >= nextMark)
+        {
+            nextMark *= 2;
+            SoundManager.instance.PlayVictory();
+        }
+
     }
 
     protected virtual void DifficultyHandler()
@@ -129,6 +142,7 @@ public class GameManager : MonoBehaviour
         pEffect.SetStatus(true);
 
         score = 0f;
+        nextMark = 100;
 
         started = true;
 

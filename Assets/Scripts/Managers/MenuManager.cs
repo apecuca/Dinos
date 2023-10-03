@@ -22,6 +22,7 @@ public class MenuManager : MonoBehaviour
 
     [Header("Customization")]
     [SerializeField] private InputField inp_nickname;
+    [SerializeField] private Toggle tog_hideNick;
 
     [Header("Assignables")]
     [SerializeField] private PhotonLobby photonLobby;
@@ -124,7 +125,9 @@ public class MenuManager : MonoBehaviour
 
     private void LoadCustomization()
     {
-        string _savedNickname = SaveInfo.GetInstance().GetNickname();
+        SaveInfo _instance = SaveInfo.GetInstance();
+
+        string _savedNickname = _instance.GetNickname();
         if (_savedNickname != null &&
             _savedNickname != "" &&
             _savedNickname != " ")
@@ -136,7 +139,15 @@ public class MenuManager : MonoBehaviour
             inp_nickname.text = "";
             inp_nickname.placeholder.GetComponent<Text>().text = "NICKNAME...";
         }
+
+        tog_hideNick.isOn = _instance.GetHideNick();
     }
+
+    public void OnToggleHideNickChanged()
+    {
+        SaveInfo.GetInstance().SetHideNick(tog_hideNick.isOn);
+    }
+
 
     // misc
 

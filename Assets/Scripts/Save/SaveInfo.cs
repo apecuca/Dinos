@@ -7,6 +7,7 @@ public class SaveInfo
     private int highscore;
     private string nickname;
     private bool sfxOn;
+    private bool hideNickname;
 
     private static SaveInfo instance;
 
@@ -28,12 +29,14 @@ public class SaveInfo
             highscore = _sgi.highscore;
             nickname = _sgi.nickname;
             sfxOn = _sgi.sfxOn;
+            hideNickname = _sgi.hideNickname;
         }
         else
         {
             highscore = 0;
             nickname = "";
             sfxOn = true;
+            hideNickname = false;
         }
     }
 
@@ -43,6 +46,7 @@ public class SaveInfo
         _sgi.highscore = highscore;
         _sgi.nickname = nickname;
         _sgi.sfxOn = sfxOn;
+        _sgi.hideNickname = hideNickname;
 
         SaveGame.Salvar(_sgi);
     }
@@ -54,6 +58,7 @@ public class SaveInfo
         highscore = 0;
         nickname = "";
         sfxOn = true;
+        hideNickname = false;
 
         Salvar();
     }
@@ -90,6 +95,18 @@ public class SaveInfo
     {
         return sfxOn;
     }
+
+    public void SetHideNick(bool _vl)
+    {
+        hideNickname = _vl;
+    }
+
+    public bool GetHideNick()
+    {
+        return hideNickname;
+    }
+
+
 
     #endregion
 

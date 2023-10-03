@@ -2960,6 +2960,7 @@ MonoBehaviour:
   src: {fileID: 1711853648}
   clip_jump: {fileID: 8300000, guid: dc744ae27106fd94c924ce62a5921456, type: 3}
   clip_died: {fileID: 8300000, guid: 792847e02bde02a42974179171588ca5, type: 3}
+  clip_victory: {fileID: 8300000, guid: 6ac7bd9325b70fb41bbfa1f72d0ac454, type: 3}
 --- !u!1 &1499370894
 GameObject:
   m_ObjectHideFlags: 0
