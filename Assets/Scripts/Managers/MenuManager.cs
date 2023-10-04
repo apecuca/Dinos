@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Profiling;
 using System.Diagnostics;
+using Photon.Pun;
 
 public class MenuManager : MonoBehaviour
 {
@@ -56,6 +57,8 @@ public class MenuManager : MonoBehaviour
 
     public void GotoSingleplayer()
     {
+        PhotonNetwork.AutomaticallySyncScene = false;
+
         Destroy(PhotonRoom.room.gameObject);
         SceneManager.LoadScene(singleplayerSceneID);
     }

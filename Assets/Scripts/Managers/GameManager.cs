@@ -190,6 +190,7 @@ public class GameManager : MonoBehaviour
 
     public virtual void GOTO_menu()
     {
+        PauseUnpause(false);
         SceneManager.LoadScene(0);
     }
 }

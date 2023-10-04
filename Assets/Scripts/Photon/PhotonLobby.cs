@@ -18,40 +18,35 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         Cursor.lockState = CursorLockMode.None;
 
-        ConnectToMaster();
+        //ConnectToMaster();
+        StartCoroutine(ConnectToMaster());
         mng_menu.ToggleTextOverlay(false, null);
     }
 
-    private void ConnectToMaster()
+    private IEnumerator ConnectToMaster()
     {
-        if (!PhotonNetwork.IsConnected)
+        btn_multiplayer.interactable = false;
+        Image _btnImg = btn_multiplayer.GetComponent<Image>();
+        Color _c = _btnImg.color;
+        _c.a = 0.5f;
+        _btnImg.color = _c;
+
+        //print("Iniciou conexão ao master...");
+
+        if (PhotonNetwork.IsConnected)
         {
-            btn_multiplayer.interactable = false;
-            Image _btnImg = btn_multiplayer.GetComponent<Image>();
-            Color _c = _btnImg.color;
-            _c.a = 0.5f;
-            _btnImg.color = _c;
+            if (!PhotonNetwork.IsConnectedAndReady)
+                yield return new WaitForEndOfFrame();
 
-            //print("Iniciou conexão ao master...");
-
-            if (offlineMode)
-                return;
-
-            PhotonNetwork.ConnectUsingSettings();
-            StartCoroutine(RetryMasterConnection());
+            OnConnectedToMaster();
+            yield break;
         }
+        if (offlineMode)
+            yield break;
+
+        PhotonNetwork.ConnectUsingSettings();
     }
 
-    private IEnumerator RetryMasterConnection()
-    {
-        yield return new WaitForSeconds(15f);
-        
-        if (!PhotonNetwork.IsConnected)
-        {
-            print("Falha na conexão ao master, tentando de novo");
-            ConnectToMaster();
-        }
-    }
 
     public override void OnConnectedToMaster()
     {
@@ -70,7 +65,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         mng_menu.ToggleTextOverlay(true, joinRoomText);
 
-        if (!PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsConnectedAndReady)
         {
             OnJoinRandomFailed(-1, "Not connected to master server");
             return;
@@ -92,7 +87,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         mng_menu.ToggleTextOverlay(true, "Nenhuma sala disponível, criando uma...");
 
-        if (!PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsConnectedAndReady)
         {
             OnCreateRoomFailed(-1, "Not connected to master server");
             return;
