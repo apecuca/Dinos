@@ -264,7 +264,7 @@ MonoBehaviour:
     m_Bits: 256
   feet: {fileID: 6565985179116231674}
   anim: {fileID: 6565985177621075357}
-  spr: {fileID: 0}
+  spr: {fileID: 6565985177621075356}
   cosmeticsData: {fileID: 11400000, guid: e244972918b49df42bf3970aceabdad9, type: 2}
 --- !u!1 &6565985178775121639
 GameObject:

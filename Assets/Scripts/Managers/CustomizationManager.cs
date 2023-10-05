@@ -5,8 +5,14 @@ using UnityEngine.UI;
 
 public class CustomizationManager : MonoBehaviour
 {
+    [Header("UI Elements")]
     [SerializeField] private Image img_preview;
     [SerializeField] private Text lb_select;
+    [SerializeField] private Text lb_skinName;
+    [SerializeField] private Text lb_skinDesc;
+    [SerializeField] private Text lb_skinCount;
+
+    [Header("Misc assignables")]
     [SerializeField] private SO_Cosmetics cosmetics;
 
     int previewSkin = 0;
@@ -19,6 +25,8 @@ public class CustomizationManager : MonoBehaviour
 
     public void SelectSkin()
     {
+        // fazer a parte dos dinheiros aqui
+
         selectedSkin = previewSkin;
         SaveInfo.GetInstance().SetSelectedSkin(selectedSkin);
     }
@@ -37,7 +45,11 @@ public class CustomizationManager : MonoBehaviour
 
         SkinInfo _skin = cosmetics.GetSkinInfo(previewSkin);
         img_preview.sprite = _skin.preview;
-        lb_select.text = $"{_skin.cost} COINS\n{_skin.name}";
+        // mudar texto caso já tiver a skin
+        lb_select.text = $"BUY\n{_skin.cost} c";
+        lb_skinName.text = $"{_skin.name}";
+        lb_skinDesc.text = $"{_skin.description}";
+        lb_skinCount.text = $"{previewSkin + 1}/{cosmetics.GetSkinsLength()}";
     }
 
     public void ChangePreviewSkin(int _dir)

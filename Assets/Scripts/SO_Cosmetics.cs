@@ -7,6 +7,7 @@ using UnityEngine;
 public class SkinInfo
 {
     public string name;
+    public string description;
     public RuntimeAnimatorController anim;
     public Sprite preview;
     public int cost;

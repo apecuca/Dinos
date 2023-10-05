@@ -14,17 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skins:
   - name: Base
+    description: "PADR\xC3O N\xC9 PAE"
     anim: {fileID: 9100000, guid: 4f614f06976cbe14f98045fc49c56af9, type: 2}
     preview: {fileID: -6668397970075567693, guid: c47e925e33935dc43b3ba55cfe64e51d,
       type: 3}
-    cost: 69
+    cost: 0
   - name: Suit
+    description: Um cavalheiro muito bem vestido que pretendia ir para uma festa
+      super chique
     anim: {fileID: 9100000, guid: 67267f1d1d601ac4888e5b60d7e10e46, type: 2}
     preview: {fileID: 3098562667075037593, guid: c47e925e33935dc43b3ba55cfe64e51d,
       type: 3}
-    cost: 420
+    cost: 69420
   - name: Banana
+    description: "Um pijama muito confort\xE1vel, mas que j\xE1 fez ele trope\xE7ar
+      em si mesmo muitas vezes"
     anim: {fileID: 9100000, guid: 27f681df9ff9cb04c86a01fe08499229, type: 2}
     preview: {fileID: 540098270226048306, guid: c47e925e33935dc43b3ba55cfe64e51d,
       type: 3}
-    cost: 621
+    cost: 848468

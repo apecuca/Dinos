@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource src;
+    [SerializeField] private AudioSource src_player;
+    [SerializeField] private AudioSource src_game;
     [SerializeField] private AudioClip clip_jump;
     [SerializeField] private AudioClip clip_died;
     [SerializeField] private AudioClip clip_victory;
@@ -23,8 +24,8 @@ public class SoundManager : MonoBehaviour
         if (!sfxOn)
             return;
 
-        src.Stop();
-        src.PlayOneShot(clip_jump, 1.25f);
+        src_player.Stop();
+        src_player.PlayOneShot(clip_jump, 1.25f);
     }
 
     public void PlayDied()
@@ -32,8 +33,8 @@ public class SoundManager : MonoBehaviour
         if (!sfxOn)
             return;
 
-        src.Stop();
-        src.PlayOneShot(clip_died, 1.25f);
+        src_player.Stop();
+        src_player.PlayOneShot(clip_died, 1.25f);
     }
 
     public void PlayVictory()
@@ -41,8 +42,8 @@ public class SoundManager : MonoBehaviour
         if (!sfxOn)
             return;
 
-        src.Stop();
-        src.PlayOneShot(clip_victory, 0.8f);
+        src_game.Stop();
+        src_game.PlayOneShot(clip_victory, 0.8f);
     }
 
 
