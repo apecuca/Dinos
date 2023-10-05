@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22369ba3d83ed55478fef5f60903df20, type: 3}
+  m_Name: Cosmetics
+  m_EditorClassIdentifier: 
+  skins:
+  - name: Base
+    anim: {fileID: 9100000, guid: 4f614f06976cbe14f98045fc49c56af9, type: 2}
+    preview: {fileID: -6668397970075567693, guid: c47e925e33935dc43b3ba55cfe64e51d,
+      type: 3}
+    cost: 69
+  - name: Suit
+    anim: {fileID: 9100000, guid: 67267f1d1d601ac4888e5b60d7e10e46, type: 2}
+    preview: {fileID: 3098562667075037593, guid: c47e925e33935dc43b3ba55cfe64e51d,
+      type: 3}
+    cost: 420
+  - name: Banana
+    anim: {fileID: 9100000, guid: 27f681df9ff9cb04c86a01fe08499229, type: 2}
+    preview: {fileID: 540098270226048306, guid: c47e925e33935dc43b3ba55cfe64e51d,
+      type: 3}
+    cost: 621

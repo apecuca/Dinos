@@ -8,6 +8,7 @@ public class SaveGameInfo
 {
     public int highscore;
     public string nickname;
+    public int selectedSkin;
     public bool sfxOn;
     public bool hideNickname;
 }

@@ -24,6 +24,7 @@ public class MenuManager : MonoBehaviour
     [Header("Customization")]
     [SerializeField] private InputField inp_nickname;
     [SerializeField] private Toggle tog_hideNick;
+    [SerializeField] private CustomizationManager mng_customization;
 
     [Header("Assignables")]
     [SerializeField] private PhotonLobby photonLobby;
@@ -95,6 +96,7 @@ public class MenuManager : MonoBehaviour
                 break;
 
             case 2:
+                mng_customization.UpdatePreview(true);
                 HUD_Customization.SetActive(true);
                 break;
 

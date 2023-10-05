@@ -6,6 +6,7 @@ public class SaveInfo
 {
     private int highscore;
     private string nickname;
+    private int selectedSkin;
     private bool sfxOn;
     private bool hideNickname;
 
@@ -28,6 +29,7 @@ public class SaveInfo
             SaveGameInfo _sgi = SaveGame.Carregar();
             highscore = _sgi.highscore;
             nickname = _sgi.nickname;
+            selectedSkin = _sgi.selectedSkin;
             sfxOn = _sgi.sfxOn;
             hideNickname = _sgi.hideNickname;
         }
@@ -35,6 +37,7 @@ public class SaveInfo
         {
             highscore = 0;
             nickname = "";
+            selectedSkin = 0;
             sfxOn = true;
             hideNickname = false;
         }
@@ -45,6 +48,7 @@ public class SaveInfo
         SaveGameInfo _sgi = new SaveGameInfo();
         _sgi.highscore = highscore;
         _sgi.nickname = nickname;
+        _sgi.selectedSkin = selectedSkin;
         _sgi.sfxOn = sfxOn;
         _sgi.hideNickname = hideNickname;
 
@@ -57,6 +61,7 @@ public class SaveInfo
 
         highscore = 0;
         nickname = "";
+        selectedSkin = 0;
         sfxOn = true;
         hideNickname = false;
 
@@ -84,6 +89,16 @@ public class SaveInfo
     public string GetNickname()
     {
         return nickname;
+    }
+
+    public void SetSelectedSkin(int _id)
+    {
+        selectedSkin = _id;
+    }
+
+    public int GetSelectedSkin()
+    {
+        return selectedSkin;
     }
 
     public void SetSfxOn(bool _vl)

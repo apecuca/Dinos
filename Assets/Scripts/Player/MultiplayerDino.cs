@@ -12,7 +12,7 @@ public class MultiplayerDino : Dino
 
     [Header("Multiplayer stuff")]
     [SerializeField] private TextMesh txt_nickname;
-    [SerializeField] private SpriteRenderer spr;
+    //[SerializeField] private SpriteRenderer spr;
     [SerializeField] private PhotonView pv;
 
     private string nickname = "";
@@ -22,8 +22,8 @@ public class MultiplayerDino : Dino
 
     protected override void Start()
     {
-        base.Start();
-        anim.SetTrigger("Started");
+        //base.Start();
+        rb = GetComponent<Rigidbody2D>();
         txt_nickname.gameObject.SetActive(!SaveInfo.GetInstance().GetHideNick());
 
         if (!pv.IsMine)
@@ -191,14 +191,20 @@ public class MultiplayerDino : Dino
                 nickname = $"Randola {Random.Range(0, 100)}";
         }
         
-        pv.RPC("RPC_UpdateCosmetics", RpcTarget.All, nickname);
+        pv.RPC("RPC_UpdateCosmetics", RpcTarget.All,
+            nickname, SaveInfo.GetInstance().GetSelectedSkin());
     }
 
     [PunRPC]
-    public void RPC_UpdateCosmetics(string _nickname)
+    public void RPC_UpdateCosmetics(string _nickname, int _skinID)
     {
         nickname = _nickname;
         txt_nickname.text = $"{_nickname}";
+
+        SkinInfo _skin = cosmeticsData.GetSkinInfo(_skinID);
+        spr.sprite = _skin.preview;
+        anim.runtimeAnimatorController = _skin.anim;
+        anim.SetTrigger("Started");
     }
 
     #endregion

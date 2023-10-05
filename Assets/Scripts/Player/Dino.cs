@@ -15,6 +15,8 @@ public class Dino : MonoBehaviour
     [SerializeField] protected LayerMask groundLayer;
     [SerializeField] protected Transform feet;
     [SerializeField] protected Animator anim;
+    [SerializeField] protected SpriteRenderer spr;
+    [SerializeField] protected SO_Cosmetics cosmeticsData;
     public bool grounded { get; protected set; } = false;
     public bool crouching { get; protected set; } = false;
 
@@ -28,6 +30,11 @@ public class Dino : MonoBehaviour
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        SkinInfo _cSkin = cosmeticsData.GetSkinInfo(
+            SaveInfo.GetInstance().GetSelectedSkin());
+        spr.sprite = _cSkin.preview;
+        anim.runtimeAnimatorController = _cSkin.anim;
     }
 
     protected virtual void Update()
