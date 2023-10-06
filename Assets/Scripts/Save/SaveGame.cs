@@ -8,7 +8,9 @@ public class SaveGameInfo
 {
     public int highscore;
     public string nickname;
+    public int coins;
     public int selectedSkin;
+    public List<int> boughtSkins;
     public bool sfxOn;
     public bool hideNickname;
 }

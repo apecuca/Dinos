@@ -309,6 +309,7 @@ public class MultiplayerManager : GameManager
         myMultiplayerDino.SetFreeMove(false);
         multCam.SetFollow(false, null);
 
+        increaseDiffTimer = -4f;
         difficulty = 1f;
         if (!PhotonNetwork.IsMasterClient)
             multPEffect.CompensateForLag(_hostLatency, _sentTimestamp);

@@ -47,6 +47,8 @@ public class MenuManager : MonoBehaviour
             _versionText += "PC";
         else if (SystemInfo.deviceType == DeviceType.Handheld)
             _versionText += "MOBILE";
+        else
+            _versionText += "???";
         _versionText += $"_{Application.version}";
 
         lb_version.text = _versionText;

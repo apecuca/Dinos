@@ -17,6 +17,7 @@ public class MultiplayerDino : Dino
 
     private string nickname = "";
     private float score = 0;
+    private bool alreadyGainedScoreCoins = false;
 
     public bool ready { get; private set; } = false;
 
@@ -97,9 +98,27 @@ public class MultiplayerDino : Dino
         
         if (pv.IsMine)
         {
+            OnPlayerGameEnded();
             MultiplayerManager.instance.ChangeTextToWinner();
             SoundManager.instance.PlayVictory();
         }
+    }
+    
+    // coisas como aplicar highscore e ganhar coins
+    // rodar quando ganhar ou perder
+    protected void OnPlayerGameEnded()
+    {
+        if (score > SaveInfo.GetInstance().GetHighscore())
+            SaveInfo.GetInstance().SetHighscore((int)score);
+        if (!alreadyGainedScoreCoins)
+        {
+            // aplicar coins aqui
+            SaveInfo.GetInstance().AddCoins((int)score);
+
+            alreadyGainedScoreCoins = true;
+        }
+
+        SaveInfo.GetInstance().Salvar();
     }
 
     #endregion
@@ -158,10 +177,7 @@ public class MultiplayerDino : Dino
 
         pv.RPC("RPC_Die", RpcTarget.All);
 
-        if (!SaveGame.TemSave()) return;
-        if (score < SaveInfo.GetInstance().GetHighscore()) return;
-        SaveInfo.GetInstance().SetHighscore((int)score);
-        SaveInfo.GetInstance().Salvar();
+        OnPlayerGameEnded();
     }
 
     [PunRPC]
@@ -244,11 +260,12 @@ public class MultiplayerDino : Dino
 
         Camera.main.GetComponent<MultiplayerCamera>().SetFollow(true, this.transform);
         SetFreeMove(true);
-        score = 0;
 
+        score = 0;
         dead = false;
         winner = false;
         ready = false;
+        alreadyGainedScoreCoins = false;
 
         UpdateScore();
         UpdateReady();

@@ -25,11 +25,11 @@ MonoBehaviour:
     anim: {fileID: 9100000, guid: 67267f1d1d601ac4888e5b60d7e10e46, type: 2}
     preview: {fileID: 3098562667075037593, guid: c47e925e33935dc43b3ba55cfe64e51d,
       type: 3}
-    cost: 69420
+    cost: 15
   - name: Banana
     description: "Um pijama muito confort\xE1vel, mas que j\xE1 fez ele trope\xE7ar
       em si mesmo muitas vezes"
     anim: {fileID: 9100000, guid: 27f681df9ff9cb04c86a01fe08499229, type: 2}
     preview: {fileID: 540098270226048306, guid: c47e925e33935dc43b3ba55cfe64e51d,
       type: 3}
-    cost: 848468
+    cost: 34

@@ -173,10 +173,11 @@ public class GameManager : MonoBehaviour
         HUD_gameover.SetActive(true);
         difficulty = 0;
 
-        if (highscore > SaveInfo.GetInstance().GetHighscore())
-            SaveInfo.GetInstance().SetHighscore(highscore);
-
-        SaveInfo.GetInstance().Salvar();
+        SaveInfo _saveInstance = SaveInfo.GetInstance();
+        if (highscore > _saveInstance.GetHighscore())
+            _saveInstance.SetHighscore(highscore);
+        _saveInstance.AddCoins((int)(score / 5));
+        _saveInstance.Salvar();
     }
 
     public virtual void PauseUnpause(bool _vl)
