@@ -64,6 +64,7 @@ MonoBehaviour:
   - RPC_SetFreeMove
   - RPC_FLipDino
   - RPC_FlipDino
+  - RPC_OnGameEnded
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

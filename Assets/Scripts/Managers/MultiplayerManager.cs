@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -332,80 +333,79 @@ public class MultiplayerManager : GameManager
             return;
 
         int _dinosAlive = 0;
-        int _lastDinoAlive = -1;
+        int _lastDino = -1;
         for (int i = 0; i < dinos.Count; i++)
         {
             if (dinos[i].dead)
                 continue;
 
             _dinosAlive++;
-            _lastDinoAlive = i;
+            _lastDino = i;
         }
 
-
         if (_dinosAlive == 1)
-            EndGame(_lastDinoAlive);
+            EndGame(_lastDino);
     }
 
 
-    private void EndGame(int _lastDino)
+    private void EndGame(int _lastDinoID)
     {
-        pv.RPC("RPC_EndGame", RpcTarget.All, _lastDino);
+        pv.RPC("RPC_EndGame", RpcTarget.All, _lastDinoID);
     }
 
 
     [PunRPC]
-    private void RPC_EndGame(int _lastDinoID)
+    private void RPC_EndGame(int _lastDino)
     {
         if (!started) return;
 
+        // parar jogo
         started = false;
         this.enabled = false;
         difficulty = 0;
         multPEffect.SetStatus(false);
 
+        // trocar as HUDS
         myMultiplayerDino.UpdateScore();
-        string _txt = $"GAME OVER!\n";
-        if (!myMultiplayerDino.dead)
-            _txt += $"YOU WON!";
-        else
-            _txt += $"YOU LOST :(";
-        int _intScore = (int)myMultiplayerDino.GetScore();
-        string _scoreTxt = $"00000";
-        _scoreTxt = _scoreTxt.Remove(0, _intScore.ToString().Length);
-        _txt += $"\n\nSCORE: {_scoreTxt}{_intScore}";
-
-        txt_endgame.text = _txt;
+        UpdateEndgameText(-1);
         HUD_ingame.SetActive(true);
         HUD_paused.SetActive(false);
         HUD_gameover.SetActive(true);
 
+        // lidar com vencedores e perdedores
+        // somente host faz isso para maior precisão
         if (!PhotonNetwork.IsMasterClient) return;
-        if (_lastDinoID >= dinos.Count) return;
 
-        dinos[_lastDinoID].ReviveWinner();
-        // Reviver caso o vencedor morra depois do jogo acabar
-        // pode acontecer com muito lag
-        /*
-        foreach (MultiplayerDino _d in dinos)
-        {
-            if (!_d.dead) _d.ReviveWinner();
-            break;
-        } 
-        */
+        List<MultiplayerDino> _dinoPositions = new List<MultiplayerDino>(
+            dinos.Where((v, i) => i != _lastDino));
+        _dinoPositions.Sort((x, y) => x.GetScore().CompareTo(y.GetScore()));
+        _dinoPositions.Insert(0, dinos[_lastDino]);
+        for (int i = 0; i < _dinoPositions.Count; i++)
+            _dinoPositions[i].OnGameEnded(i);
     }
 
-    public void ChangeTextToWinner()
+    public void UpdateEndgameText(int _position)
     {
+        if (_position < 0)
+        {
+            txt_endgame.text = "GAME OVER!\nCALCULANDO VENCEDORES...";
+            return;
+        }
+
         string _txt = $"GAME OVER!\n";
-        _txt += $"YOU WON!";
+        _txt += $"VOCÊ FICOU EM {_position + 1}º LUGAR!\n";
+
         int _intScore = (int)myMultiplayerDino.GetScore();
         string _scoreTxt = $"00000";
         _scoreTxt = _scoreTxt.Remove(0, _intScore.ToString().Length);
-        _txt += $"\n\nSCORE: {_scoreTxt}{_intScore}";
+        _txt += $"\nSCORE: {_scoreTxt}{_intScore}";
+
+        int _coinsToGain = (3 - _position) * 150;
+        _txt += $"\nCOINS: {(int)myMultiplayerDino.GetScore() + _coinsToGain}";
 
         txt_endgame.text = _txt;
     }
+
 
     public override void RestartGame()
     {

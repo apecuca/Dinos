@@ -33,3 +33,9 @@ MonoBehaviour:
     preview: {fileID: 540098270226048306, guid: c47e925e33935dc43b3ba55cfe64e51d,
       type: 3}
     cost: 34
+  - name: Skeleton
+    description: "Por mais incr\xEDvel que pare\xE7a, ele \xE9 bem saud\xE1vel"
+    anim: {fileID: 9100000, guid: bc08090d25912a94e9cf44bb7ca3546f, type: 2}
+    preview: {fileID: -6151730578070843088, guid: c47e925e33935dc43b3ba55cfe64e51d,
+      type: 3}
+    cost: 54

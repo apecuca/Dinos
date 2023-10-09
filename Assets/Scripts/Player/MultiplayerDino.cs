@@ -17,7 +17,6 @@ public class MultiplayerDino : Dino
 
     private string nickname = "";
     private float score = 0;
-    private bool alreadyGainedScoreCoins = false;
 
     public bool ready { get; private set; } = false;
 
@@ -81,28 +80,48 @@ public class MultiplayerDino : Dino
         MultiplayerManager.instance.UpdateReadyCount();
     }
 
-    public void ReviveWinner()
+    // Chamado do MultiplayerManager
+    public void OnGameEnded(int _position)
     {
-        pv.RPC("RPC_ReviveWinner", RpcTarget.All);
+        pv.RPC("RPC_OnGameEnded", RpcTarget.All, _position);
     }
 
     [PunRPC]
-    private void RPC_ReviveWinner()
+    private void RPC_OnGameEnded(int _position)
     {
-        winner = true;
-        dead = false;
+        bool _alreadyDied = dead;
 
-        Color _c = spr.color;
-        _c.a = 1f;
-        spr.color = _c;
-        
-        if (pv.IsMine)
+        if (_position == 0)
         {
-            OnPlayerGameEnded();
-            MultiplayerManager.instance.ChangeTextToWinner();
-            SoundManager.instance.PlayVictory();
+            winner = true;
+            dead = false;
+
+            Color _c = spr.color;
+            _c.a = 1f;
+            spr.color = _c;
         }
+
+        if (!pv.IsMine) return;
+
+        if (_position < 3)
+        {
+            AddToScore(3f - _position);
+            UpdateScore();
+
+            if (!_alreadyDied)
+                OnPlayerGameEnded();
+
+            int _coinsToGain = (3 - _position) * 150;
+
+            SaveInfo _instance = SaveInfo.GetInstance();
+            _instance.AddCoins(_coinsToGain);
+            _instance.Salvar();
+        }
+
+        MultiplayerManager.instance.UpdateEndgameText(_position);
     }
+
+
     
     // coisas como aplicar highscore e ganhar coins
     // rodar quando ganhar ou perder
@@ -110,13 +129,7 @@ public class MultiplayerDino : Dino
     {
         if (score > SaveInfo.GetInstance().GetHighscore())
             SaveInfo.GetInstance().SetHighscore((int)score);
-        if (!alreadyGainedScoreCoins)
-        {
-            // aplicar coins aqui
-            SaveInfo.GetInstance().AddCoins((int)score);
-
-            alreadyGainedScoreCoins = true;
-        }
+        SaveInfo.GetInstance().AddCoins((int)score);
 
         SaveInfo.GetInstance().Salvar();
     }
@@ -265,7 +278,6 @@ public class MultiplayerDino : Dino
         dead = false;
         winner = false;
         ready = false;
-        alreadyGainedScoreCoins = false;
 
         UpdateScore();
         UpdateReady();

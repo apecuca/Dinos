@@ -4,58 +4,76 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -6668397970075567693
-    second: base_0
+    second: 000_base_0
   - first:
       213: -2616684138493654261
-    second: base_1
+    second: 000_base_1
   - first:
       213: 8564467439292780855
-    second: base_2
+    second: 000_base_2
   - first:
       213: 3098562667075037593
-    second: suit_0
+    second: 001_suit_0
   - first:
       213: -1085341379882452054
-    second: suit_1
+    second: 001_suit_1
   - first:
       213: -6190655085968252409
-    second: suit_2
+    second: 001_suit_2
   - first:
       213: 2227554267871603652
-    second: base_3
+    second: 000_base_3
   - first:
       213: 5330170065399455003
-    second: base_4
+    second: 000_base_4
   - first:
       213: -1557151839665962156
-    second: base_5
+    second: 000_base_5
   - first:
       213: 8682247751406669693
-    second: suit_3
+    second: 001_suit_3
   - first:
       213: 7606103082156859611
-    second: suit_4
+    second: 001_suit_4
   - first:
       213: -3593885850818966611
-    second: suit_5
+    second: 001_suit_5
   - first:
       213: 540098270226048306
-    second: banana_0
+    second: 002_banana_0
   - first:
       213: -1741048407634580331
-    second: banana_1
+    second: 002_banana_1
   - first:
       213: -6844978818725156259
-    second: banana_2
+    second: 002_banana_2
   - first:
       213: -4394820945749082051
-    second: banana_3
+    second: 002_banana_3
   - first:
       213: -440590786771761124
-    second: banana_4
+    second: 002_banana_4
   - first:
       213: 7323169322196140153
-    second: banana_5
+    second: 002_banana_5
+  - first:
+      213: -6151730578070843088
+    second: 003_skeleton_0
+  - first:
+      213: -6398717129223587876
+    second: 003_skeleton_1
+  - first:
+      213: -736808621814701795
+    second: 003_skeleton_2
+  - first:
+      213: -1902160910949516896
+    second: 003_skeleton_2
+  - first:
+      213: -2218692457568125250
+    second: 003_skeleton_4
+  - first:
+      213: -2634810898120543177
+    second: 003_skeleton_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -165,11 +183,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: base_0
+      name: 000_base_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 87
+        y: 261
         width: 35
         height: 29
       alignment: 7
@@ -186,11 +204,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: base_1
+      name: 000_base_1
       rect:
         serializedVersion: 2
         x: 35
-        y: 87
+        y: 261
         width: 35
         height: 29
       alignment: 7
@@ -207,11 +225,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: base_2
+      name: 000_base_2
       rect:
         serializedVersion: 2
         x: 70
-        y: 87
+        y: 261
         width: 35
         height: 29
       alignment: 7
@@ -228,11 +246,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: suit_0
+      name: 001_suit_0
       rect:
         serializedVersion: 2
         x: 105
-        y: 87
+        y: 261
         width: 35
         height: 29
       alignment: 7
@@ -249,11 +267,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: suit_1
+      name: 001_suit_1
       rect:
         serializedVersion: 2
         x: 140
-        y: 87
+        y: 261
         width: 35
         height: 29
       alignment: 7
@@ -270,11 +288,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: suit_2
+      name: 001_suit_2
       rect:
         serializedVersion: 2
         x: 175
-        y: 87
+        y: 261
         width: 35
         height: 29
       alignment: 7
@@ -291,11 +309,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: base_3
+      name: 000_base_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 58
+        y: 232
         width: 35
         height: 29
       alignment: 7
@@ -312,11 +330,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: base_4
+      name: 000_base_4
       rect:
         serializedVersion: 2
         x: 35
-        y: 58
+        y: 232
         width: 35
         height: 29
       alignment: 7
@@ -333,11 +351,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: base_5
+      name: 000_base_5
       rect:
         serializedVersion: 2
         x: 70
-        y: 58
+        y: 232
         width: 35
         height: 29
       alignment: 7
@@ -354,11 +372,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: suit_3
+      name: 001_suit_3
       rect:
         serializedVersion: 2
         x: 105
-        y: 58
+        y: 232
         width: 35
         height: 29
       alignment: 7
@@ -375,11 +393,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: suit_4
+      name: 001_suit_4
       rect:
         serializedVersion: 2
         x: 140
-        y: 58
+        y: 232
         width: 35
         height: 29
       alignment: 7
@@ -396,11 +414,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: suit_5
+      name: 001_suit_5
       rect:
         serializedVersion: 2
         x: 175
-        y: 58
+        y: 232
         width: 35
         height: 29
       alignment: 7
@@ -417,11 +435,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: banana_0
+      name: 002_banana_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 29
+        y: 203
         width: 35
         height: 29
       alignment: 7
@@ -438,11 +456,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: banana_1
+      name: 002_banana_1
       rect:
         serializedVersion: 2
         x: 35
-        y: 29
+        y: 203
         width: 35
         height: 29
       alignment: 7
@@ -459,11 +477,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: banana_2
+      name: 002_banana_2
       rect:
         serializedVersion: 2
         x: 70
-        y: 29
+        y: 203
         width: 35
         height: 29
       alignment: 7
@@ -480,11 +498,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: banana_3
+      name: 002_banana_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 174
         width: 35
         height: 29
       alignment: 7
@@ -501,11 +519,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: banana_4
+      name: 002_banana_4
       rect:
         serializedVersion: 2
         x: 35
-        y: 0
+        y: 174
         width: 35
         height: 29
       alignment: 7
@@ -522,11 +540,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: banana_5
+      name: 002_banana_5
       rect:
         serializedVersion: 2
         x: 70
-        y: 0
+        y: 174
         width: 35
         height: 29
       alignment: 7
@@ -538,6 +556,132 @@ TextureImporter:
       bones: []
       spriteID: 9700a8fd2bf11a560800000000000000
       internalID: 7323169322196140153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 003_skeleton_0
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 203
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 031dd2ce1a9a0aaa0800000000000000
+      internalID: -6151730578070843088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 003_skeleton_1
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 203
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd7bb6e3ca03337a0800000000000000
+      internalID: -6398717129223587876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 003_skeleton_2
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 203
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d112a45567456c5f0800000000000000
+      internalID: -736808621814701795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 003_skeleton_3
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 174
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a97835caba2a95e0800000000000000
+      internalID: -1902160910949516896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 003_skeleton_4
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 174
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebe30d807fe9531e0800000000000000
+      internalID: -2218692457568125250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 003_skeleton_5
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 174
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 734723fa2754f6bd0800000000000000
+      internalID: -2634810898120543177
       vertices: []
       indices: 
       edges: []
