@@ -25,6 +25,16 @@ public class CustomizationManager : MonoBehaviour
         selectedSkin = SaveInfo.GetInstance().GetSelectedSkin();
     }
 
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.C)) return;
+
+        SaveInfo _saveInstance = SaveInfo.GetInstance();
+        _saveInstance.AddCoins(100);
+        _saveInstance.Salvar();
+        UpdatePreview();
+    }
+
     public void SelectSkin()
     {
         SaveInfo _saveInfo = SaveInfo.GetInstance();
