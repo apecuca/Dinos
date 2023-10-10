@@ -27,21 +27,21 @@ public class CustomizationManager : MonoBehaviour
 
     public void SelectSkin()
     {
-        SaveInfo _instance = SaveInfo.GetInstance();
+        SaveInfo _saveInfo = SaveInfo.GetInstance();
 
         // fazer a parte dos dinheiros aqui
-        if (!_instance.GetBoughtSkins().Contains(previewSkin))
+        if (!_saveInfo.GetBoughtSkins().Contains(previewSkin))
         {
             int _skinPrice = cosmetics.GetSkinInfo(previewSkin).cost;
-            if (_skinPrice > _instance.GetCoins())
+            if (_skinPrice > _saveInfo.GetCoins())
                 return;
 
-            _instance.AddToBoughtSkins(previewSkin);
-            _instance.SpendCoins(_skinPrice);
+            _saveInfo.AddToBoughtSkins(previewSkin);
+            _saveInfo.SpendCoins(_skinPrice);
         }
 
         selectedSkin = previewSkin;
-        _instance.SetSelectedSkin(selectedSkin);
+        _saveInfo.SetSelectedSkin(selectedSkin);
         UpdatePreview();
     }
 
@@ -51,14 +51,16 @@ public class CustomizationManager : MonoBehaviour
         if (previewSkin >= cosmetics.GetSkinsLength())
             return;
 
+        SaveInfo _saveInfo = SaveInfo.GetInstance();
+
         if (_force)
         {
-            selectedSkin = SaveInfo.GetInstance().GetSelectedSkin();
+            selectedSkin = _saveInfo.GetSelectedSkin();
             previewSkin = selectedSkin;
         }
 
         SkinInfo _skin = cosmetics.GetSkinInfo(previewSkin);
-        int _coins = SaveInfo.GetInstance().GetCoins();
+        int _coins = _saveInfo.GetCoins();
 
         img_preview.sprite = _skin.preview;
         lb_skinName.text = $"{_skin.name}";
@@ -66,24 +68,24 @@ public class CustomizationManager : MonoBehaviour
         lb_skinCount.text = $"{previewSkin + 1}/{cosmetics.GetSkinsLength()}";
         lb_coinsCount.text = $"{_coins} c";
 
-        if (SaveInfo.GetInstance().GetBoughtSkins().Contains(previewSkin))
+        if (_saveInfo.GetBoughtSkins().Contains(previewSkin))
         {
             if (selectedSkin == previewSkin)
             {
-                lb_select.text = "SELECTED";
+                lb_select.text = "SELECIONADO";
                 btn_select.interactable = false;
                 lb_select.color = Color.black;
                 return;
             }
 
             // caso não seja
-            lb_select.text = "SELECT";
+            lb_select.text = "SELECIONAR";
             btn_select.interactable = true;
             lb_select.color = Color.black;
         }
         else
         {
-            lb_select.text = $"BUY\n{_skin.cost} c";
+            lb_select.text = $"COMPRAR\n{_skin.cost} c";
 
             if (_skin.cost > _coins)
             {

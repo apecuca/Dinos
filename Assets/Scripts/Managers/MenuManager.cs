@@ -91,6 +91,7 @@ public class MenuManager : MonoBehaviour
         {
             case 0:
                 HUD_Main.SetActive(true);
+                photonLobby.UpdatePlayerCount();
                 break;
 
             case 1:

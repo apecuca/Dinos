@@ -3227,7 +3227,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 193}
-  m_SizeDelta: {x: 1139.5771, y: 314}
+  m_SizeDelta: {x: 1139.5771, y: 433.04}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1168294286
 MonoBehaviour:
@@ -3261,7 +3261,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.78
-  m_Text: 'PLAYERS READY
+  m_Text: 'JOGADORES PRONTOS
 
     0/0'
 --- !u!222 &1168294287
@@ -4072,7 +4072,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: PAUSED?
+  m_Text: PAUSADO?
 --- !u!222 &1329354641
 CanvasRenderer:
   m_ObjectHideFlags: 0

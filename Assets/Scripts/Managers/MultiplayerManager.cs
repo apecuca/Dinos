@@ -287,7 +287,7 @@ public class MultiplayerManager : GameManager
         else
             txt_playersReady.color = Color.red;
 
-        txt_playersReady.text = $"PLAYERS READY\n{_pReady}/{dinos.Count}";
+        txt_playersReady.text = $"JOGADORES PRONTOS\n{_pReady}/{dinos.Count}";
 
         if (!PhotonNetwork.IsMasterClient)
             return;

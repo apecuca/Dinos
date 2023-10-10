@@ -11,8 +11,12 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
     [SerializeField] private Button btn_multiplayer;
     [SerializeField] private MenuManager mng_menu;
+    [SerializeField] private Text lb_playerCount;
 
     private string joinRoomText = "Conectando a uma sala...";
+    private string createRoomText = "Nenhuma sala disponível, criando uma...";
+    private string failedCreateRoomText = "Falha na criação de sala.";
+    private string notConnectedText = "Desconectado do servidor master";
 
     void Start()
     {
@@ -58,8 +62,19 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         _c.a = 1f;
         _btnImg.color = _c;
 
+        lb_playerCount.gameObject.SetActive(true);
+        UpdatePlayerCount();
         //print("Conectou no master :)");
     }
+
+    public void UpdatePlayerCount()
+    {
+        if (!PhotonNetwork.IsConnected)
+            return;
+
+        lb_playerCount.text = $"Players online: {PhotonNetwork.CountOfPlayers}";
+    }
+
 
     public void OnMultiplayerBtnClicked()
     {
@@ -67,7 +82,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
         if (!PhotonNetwork.IsConnectedAndReady)
         {
-            OnJoinRandomFailed(-1, "Not connected to master server");
+            OnJoinRandomFailed(-1, notConnectedText);
             return;
         }
             
@@ -85,11 +100,11 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
     private void CreateRoom()
     {
-        mng_menu.ToggleTextOverlay(true, "Nenhuma sala disponível, criando uma...");
+        mng_menu.ToggleTextOverlay(true, createRoomText);
 
         if (!PhotonNetwork.IsConnectedAndReady)
         {
-            OnCreateRoomFailed(-1, "Not connected to master server");
+            OnCreateRoomFailed(-1, notConnectedText);
             return;
         }
 
@@ -120,7 +135,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         //print("Falhou em criar sala.");
 
-        mng_menu.ToggleTextOverlay(true, $"Falha na criação de sala.\n{message}, errCod: {returnCode}", true);
+        mng_menu.ToggleTextOverlay(true, $"{failedCreateRoomText}\n{message}, errCod: {returnCode}", true);
     }
 
     
