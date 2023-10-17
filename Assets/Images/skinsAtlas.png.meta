@@ -128,6 +128,24 @@ TextureImporter:
   - first:
       213: -5629650416662728982
     second: 004_chicken_5
+  - first:
+      213: -3026007164293155599
+    second: 007_joker_0
+  - first:
+      213: -7002205261685103367
+    second: 007_joker_1
+  - first:
+      213: -1657334148244607861
+    second: 007_joker_2
+  - first:
+      213: 6901862457769025551
+    second: 007_joker_3
+  - first:
+      213: -7253650123678289099
+    second: 007_joker_4
+  - first:
+      213: 4203644752545448254
+    second: 007_joker_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1114,6 +1132,132 @@ TextureImporter:
       bones: []
       spriteID: aee2031f5c67fd1b0800000000000000
       internalID: -5629650416662728982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 007_joker_0
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 145
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f4f48c34867106d0800000000000000
+      internalID: -3026007164293155599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 007_joker_1
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 145
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f463ece96b23de90800000000000000
+      internalID: -7002205261685103367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 007_joker_2
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 145
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8c61c38f57fff8e0800000000000000
+      internalID: -1657334148244607861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 007_joker_3
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 116
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f006de3765758cf50800000000000000
+      internalID: 6901862457769025551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 007_joker_4
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 116
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 533ff2dd4abd55b90800000000000000
+      internalID: -7253650123678289099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 007_joker_5
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 116
+        width: 35
+        height: 29
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e31086d61a8565a30800000000000000
+      internalID: 4203644752545448254
       vertices: []
       indices: 
       edges: []
