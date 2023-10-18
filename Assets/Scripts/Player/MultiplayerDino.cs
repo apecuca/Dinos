@@ -15,6 +15,8 @@ public class MultiplayerDino : Dino
     //[SerializeField] private SpriteRenderer spr;
     [SerializeField] private PhotonView pv;
 
+    private float x = 0;
+
     private string nickname = "";
     private float score = 0;
 
@@ -140,15 +142,18 @@ public class MultiplayerDino : Dino
 
     private void FreeMoveHandler()
     {
-        float _x = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(_x * moveSpeed, rb.velocity.y);
+        //float _x = Input.GetAxisRaw("Horizontal");
+        if (pcInputs)
+            x = Input.GetAxisRaw("Horizontal");
+
+        rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
 
         // FLIP AQUI
-        if (_x == 0)
+        if (x == 0)
             return;
 
-        if (_x != spr.transform.localScale.x)
-            FlipDino(_x);
+        if (x != spr.transform.localScale.x)
+            FlipDino(x);
     }
 
     public void FlipDino(float _dir)
@@ -306,6 +311,11 @@ public class MultiplayerDino : Dino
         }
 
             
+    }
+
+    public void SetX(float _vl)
+    {
+        x = _vl;
     }
 
 

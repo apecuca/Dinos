@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immortal: 0
-  pcInputs: 1
+  pcInputs: 0
   standingCol: {fileID: 6565985178775121639}
   crouchingCol: {fileID: 6565985178145592727}
   groundLayer:

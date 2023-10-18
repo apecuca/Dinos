@@ -15,6 +15,7 @@ public class MultiplayerManager : GameManager
     [SerializeField] private Text txt_endgame;
     [SerializeField] private PhotonView pv;
     [SerializeField] private MultiplayerParallaxEffect multPEffect;
+    [SerializeField] private GameObject[] btns_movement;
 
     [Header("Pre-game assignables")]
     [SerializeField] private Text txt_playersReady;
@@ -25,6 +26,9 @@ public class MultiplayerManager : GameManager
     private MultiplayerCamera multCam;
 
     private float updateScoreTimer = 0f;
+
+    private int rightAxis = 0;
+    private int leftAxis = 0;
 
     public static new MultiplayerManager instance { get; private set; }
 
@@ -75,6 +79,9 @@ public class MultiplayerManager : GameManager
 
         multCam = Camera.main.gameObject.GetComponent<MultiplayerCamera>();
         multCam.SetFollow(true, myMultiplayerDino.transform);
+
+        btns_movement[0].SetActive(true);
+        btns_movement[1].SetActive(true);
 
         ScoreHandler();
     }
@@ -308,6 +315,11 @@ public class MultiplayerManager : GameManager
     private void RPC_StartGame(int _hostLatency, int _sentTimestamp)
     {
         myMultiplayerDino.SetFreeMove(false);
+        rightAxis = 0;
+        leftAxis = 0;
+        myMultiplayerDino.SetX(0);
+        btns_movement[0].SetActive(false);
+        btns_movement[1].SetActive(false);
         multCam.SetFollow(false, null);
 
         increaseDiffTimer = -4f;
@@ -418,6 +430,8 @@ public class MultiplayerManager : GameManager
     {
         multPEffect.DestroyAllObstacles();
         myMultiplayerDino.ResetDino();
+        btns_movement[0].SetActive(true);
+        btns_movement[1].SetActive(true);
         if (myMultiplayerDino.GetComponent<PhotonView>().IsMine)
             multCam.SetFollow(true, myMultiplayerDino.transform);
 
@@ -434,6 +448,8 @@ public class MultiplayerManager : GameManager
 
 
     #endregion
+
+    // MISC
 
     public MultiplayerDino GetMyDino()
     {
@@ -458,4 +474,45 @@ public class MultiplayerManager : GameManager
 
         PhotonRoom.room.DisconnectPlayer();
     }
+
+    public override void BtnJump(bool _vl)
+    {
+        if (myMultiplayerDino == null)
+            return;
+
+        //base.BtnJump(_vl);
+        myMultiplayerDino.JumpInteraction(_vl);
+    }
+
+    public override void BtnCrouch(bool _vl)
+    {
+        if (myMultiplayerDino == null)
+            return;
+
+        //base.BtnCrouch(_vl);
+        myMultiplayerDino.SetCrouching(_vl);
+    }
+
+    public void SetRightDown(bool _vl)
+    {
+        if (_vl)
+            rightAxis = 1;
+        else
+            rightAxis = 0;
+
+        myMultiplayerDino.SetX(rightAxis + leftAxis);
+    }
+
+    public void SetLeftDown(bool _vl)
+    {
+        if (_vl)
+            leftAxis = -1;
+        else
+            leftAxis = 0;
+
+        myMultiplayerDino.SetX(rightAxis + leftAxis);
+    }
+
+
+
 }

@@ -2119,7 +2119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1161437841
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2156,8 +2156,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 165790961}
-          m_MethodName: SetCrouching
+        - m_Target: {fileID: 1489043634}
+          m_MethodName: BtnCrouch
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2171,8 +2171,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 165790961}
-          m_MethodName: SetCrouching
+        - m_Target: {fileID: 1489043634}
+          m_MethodName: BtnCrouch
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3200,7 +3200,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1584858862
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3237,8 +3237,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 165790961}
-          m_MethodName: JumpInteraction
+        - m_Target: {fileID: 1489043634}
+          m_MethodName: BtnJump
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3252,8 +3252,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 165790961}
-          m_MethodName: JumpInteraction
+        - m_Target: {fileID: 1489043634}
+          m_MethodName: BtnJump
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4101,6 +4101,11 @@ PrefabInstance:
     - target: {fileID: 6565985178290048992, guid: 0fa0d90b8345bea4bb8700dbc89df17b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6565985178290048993, guid: 0fa0d90b8345bea4bb8700dbc89df17b,
+        type: 3}
+      propertyPath: pcInputs
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6565985178290049021, guid: 0fa0d90b8345bea4bb8700dbc89df17b,

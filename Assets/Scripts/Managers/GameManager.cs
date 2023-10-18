@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     protected float increaseDiffTimer = 0f;
     protected float maxDifficulty = 5f;
     protected float scorePerFrame = 4.5f;
-    protected float difficultyPerSec = 0.0085f; // 0.0065
+    protected float difficultyPerSec = 0.015f; // 0.0065 // 0.0085
 
     private float nextMark = 100;
 
@@ -194,4 +194,18 @@ public class GameManager : MonoBehaviour
         PauseUnpause(false);
         SceneManager.LoadScene(0);
     }
+
+    // INPUTS
+
+    public virtual void BtnJump(bool _vl)
+    {
+        myDino.JumpInteraction(_vl);
+    }
+
+    public virtual void BtnCrouch(bool _vl)
+    {
+        myDino.SetCrouching(_vl);
+    }
+
+
 }

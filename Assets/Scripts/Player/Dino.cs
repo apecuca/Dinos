@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dino : MonoBehaviour
 {
     [SerializeField] private bool immortal = false;
-    [SerializeField] private bool pcInputs = false;
+    [SerializeField] protected bool pcInputs = false;
 
     protected Rigidbody2D rb;
 
@@ -26,6 +26,12 @@ public class Dino : MonoBehaviour
     private float jumpTimer = 0f;
     public bool jumping { get; private set; } = false;
     private Vector2 ogPos;
+
+    private void Awake()
+    {
+        if (SystemInfo.deviceType == DeviceType.Desktop)
+            pcInputs = true;
+    }
 
     protected virtual void Start()
     {
