@@ -22,7 +22,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         Cursor.lockState = CursorLockMode.None;
 
-        //ConnectToMaster();
         StartCoroutine(ConnectToMaster());
         mng_menu.ToggleTextOverlay(false, null);
     }
@@ -35,7 +34,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
         _c.a = 0.5f;
         _btnImg.color = _c;
 
-        //print("Iniciou conexão ao master...");
 
         if (PhotonNetwork.IsConnected)
         {
@@ -64,7 +62,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
         lb_playerCount.gameObject.SetActive(true);
         UpdatePlayerCount();
-        //print("Conectou no master :)");
     }
 
     public void UpdatePlayerCount()
@@ -92,8 +89,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        //print($"Falhou em entrar em sala aleatória.\n{message}, errCod: {returnCode}");
-
         mng_menu.ToggleTextOverlay(false, null);
         CreateRoom();
     }
@@ -133,8 +128,6 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        //print("Falhou em criar sala.");
-
         mng_menu.ToggleTextOverlay(true, $"{failedCreateRoomText}\n{message}, errCod: {returnCode}", true);
     }
 

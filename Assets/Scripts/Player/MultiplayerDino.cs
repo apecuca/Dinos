@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class MultiplayerDino : Dino
 {
@@ -11,8 +12,7 @@ public class MultiplayerDino : Dino
     public bool dead { get; private set; } = false;
 
     [Header("Multiplayer stuff")]
-    [SerializeField] private TextMesh txt_nickname;
-    //[SerializeField] private SpriteRenderer spr;
+    [SerializeField] private TextMeshPro txt_nickname;
     [SerializeField] private PhotonView pv;
 
     private float x = 0;
@@ -24,7 +24,6 @@ public class MultiplayerDino : Dino
 
     protected override void Start()
     {
-        //base.Start();
         rb = GetComponent<Rigidbody2D>();
         txt_nickname.gameObject.SetActive(!SaveInfo.GetInstance().GetHideNick());
 
@@ -82,7 +81,7 @@ public class MultiplayerDino : Dino
         MultiplayerManager.instance.UpdateReadyCount();
     }
 
-    // Chamado do MultiplayerManager
+    // Chamado por MultiplayerManager
     public void OnGameEnded(int _position)
     {
         pv.RPC("RPC_OnGameEnded", RpcTarget.All, _position);
@@ -142,7 +141,6 @@ public class MultiplayerDino : Dino
 
     private void FreeMoveHandler()
     {
-        //float _x = Input.GetAxisRaw("Horizontal");
         if (pcInputs)
             x = Input.GetAxisRaw("Horizontal");
 
@@ -189,7 +187,6 @@ public class MultiplayerDino : Dino
 
     protected override void Die()
     {
-        //base.Die();
         UpdateScore();
         SoundManager.instance.PlayDied();
 
@@ -264,8 +261,6 @@ public class MultiplayerDino : Dino
 
     public override void ResetDino()
     {
-        //base.ResetDino();
-
         pv.RPC("RPC_ResetDino", RpcTarget.All);
     }
 
