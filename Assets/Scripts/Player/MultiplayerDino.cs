@@ -35,6 +35,11 @@ public class MultiplayerDino : Dino
 
         this.enabled = true;
         spr.sortingOrder += 1;
+
+        if (pcInputs)
+        {
+            MultiplayerManager.instance.DisableMobileUIElements();
+        }
     }
 
     protected override void Update()

@@ -2799,6 +2799,8 @@ MonoBehaviour:
   HUD_startGame: {fileID: 1161242555}
   lb_currentScore: {fileID: 1713386954}
   lb_highscore: {fileID: 839397627}
+  mobileElements:
+  - {fileID: 1161437840}
 --- !u!114 &1489043635
 MonoBehaviour:
   m_ObjectHideFlags: 0

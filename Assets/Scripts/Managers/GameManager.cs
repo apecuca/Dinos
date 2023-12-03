@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [Header("Elements")]
     [SerializeField] private Text lb_currentScore;
     [SerializeField] private Text lb_highscore;
+    [SerializeField] private GameObject[] mobileElements;
     
     protected Transform cam = null;
     protected float increaseDiffTimer = 0f;
@@ -207,5 +208,11 @@ public class GameManager : MonoBehaviour
         myDino.SetCrouching(_vl);
     }
 
-
+    public void DisableMobileUIElements()
+    {
+        for (int i = 0; i < mobileElements.Length; i++)
+        {
+            mobileElements[i].SetActive(false);
+        }
+    }
 }

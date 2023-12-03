@@ -41,6 +41,11 @@ public class Dino : MonoBehaviour
             SaveInfo.GetInstance().GetSelectedSkin());
         spr.sprite = _cSkin.preview;
         anim.runtimeAnimatorController = _cSkin.anim;
+
+        if (pcInputs)
+        {
+            GameManager.instance.DisableMobileUIElements();
+        }
     }
 
     protected virtual void Update()

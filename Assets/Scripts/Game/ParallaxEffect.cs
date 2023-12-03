@@ -96,7 +96,7 @@ public class ParallaxEffect : MonoBehaviour
         // y = -2.93375
         Vector2 _newPos = new Vector2(_hit.point.x, -2.93375f);
         int _chosenObstID = UnityEngine.Random.Range(0, obstacles.Length);
-        float _timeToWait = (1.5f * GameManager.difficulty) - lastObstTimer;
+        float _timeToWait = (0.2f * GameManager.difficulty);
 
         if (_chosenObstID >= 6)
             yield return new WaitForSeconds(_timeToWait);
@@ -104,7 +104,7 @@ public class ParallaxEffect : MonoBehaviour
         Instantiate(obstacles[_chosenObstID],
             _newPos, Quaternion.identity, _hit.transform);
 
-        obstaclePlaceTimer = UnityEngine.Random.Range(0.55f, 1.25f) * GameManager.difficulty;
+        obstaclePlaceTimer = UnityEngine.Random.Range(0.75f, 1.25f) * GameManager.difficulty;
         //obstaclePlaceTimer = 0.55f * GameManager.difficulty;
         //obstaclePlaceTimer = 1.25f * GameManager.difficulty;
         if (_chosenObstID >= 6)

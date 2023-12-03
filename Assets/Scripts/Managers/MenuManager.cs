@@ -120,7 +120,12 @@ public class MenuManager : MonoBehaviour
 
     private void LoadSettings()
     {
-        tog_sfx.isOn = SaveInfo.GetInstance().GetSfxOn();
+        SaveInfo _instance = SaveInfo.GetInstance();
+
+        tog_sfx.isOn = _instance.GetSfxOn();
+        tog_hideNick.isOn = _instance.GetHideNick();
+
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     public void OnToggleSfxChanged()
@@ -147,8 +152,6 @@ public class MenuManager : MonoBehaviour
             inp_nickname.text = "";
             inp_nickname.placeholder.GetComponent<Text>().text = "NICKNAME...";
         }
-
-        tog_hideNick.isOn = _instance.GetHideNick();
     }
 
     public void OnToggleHideNickChanged()
@@ -177,6 +180,10 @@ public class MenuManager : MonoBehaviour
         ToggleTextOverlay(false, null);
     }
 
+    public void Quitgame()
+    {
+        Application.Quit();
+    }
 
     public void ResetSave()
     {
